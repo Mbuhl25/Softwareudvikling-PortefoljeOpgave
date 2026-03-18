@@ -1,10 +1,23 @@
 #include <iostream>
+#include <iomanip>
 #include <string>
+#include "Character.h"
 
 int main() {
     bool playing = true;
-    std::cout << " ---Launching Pokemon --- " << std::endl;
+    std::cout << std::setw(8) << " ---Launching Pokemon --- " << std::endl;
+    std::cout  << " --Pls Create a Character " << std::endl;
+    std::string characterName;
+    std::getline(std::cin, characterName);
+    Character player = Character(characterName);
+    std::cout << "Created new Character called " << player.getName() << std::endl;
     while (playing == true) {
+
+
+
+
+
+        
         std::cout << "Do you want to keep playing ( 1 )\nOr do you wish to exit the game ( 0 )" << std::endl;
         std::string answer = "";
         std::getline(std::cin, answer);
