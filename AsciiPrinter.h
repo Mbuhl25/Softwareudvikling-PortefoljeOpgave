@@ -1,20 +1,16 @@
 // ConsolePrinter Header file
 #include <string>
+#include <vector>
 #pragma once
 
 class AsciiPrinter {
     public:
         AsciiPrinter();
-        AsciiPrinter(std::string, std::string);
         std::string getName();
-        void updateMonsters(std::string, std::string);
-        void updateBorder(std::string);
-        void updateEnviroment(std::string);
+        void updateMonsters(std::vector<std::string>, std::vector<std::string>);
         void printScreen();
         ~AsciiPrinter();
     private:
-        std::string friendlyMonster;
-        std::string enemyMonster;
-        std::string border;
-        std::string environment;
+        std::vector<std::string> friendlyMonster;
+        std::vector<std::string> enemyMonster;
 };

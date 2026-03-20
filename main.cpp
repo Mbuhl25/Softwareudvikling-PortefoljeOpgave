@@ -3,6 +3,7 @@
 #include <string>
 #include "Character.h"
 #include "AsciiPrinter.h"
+#include "Monster.h"
 
 int main() {
     bool playing = true;
@@ -13,7 +14,12 @@ int main() {
     Character player = Character(characterName);
     std::cout << "Created new Character called " << player.getName() << std::endl;
 
-    AsciiPrinter screen = AsciiPrinter(" ", " ");
+    Monster Rabbit = Monster("clapit rabbit", 10, 5, "AsciiArt/Rabbit.txt");
+    Monster Deer = Monster("Deerio", 200, 15, "AsciiArt/Deer.txt");
+    Monster Owl = Monster("Owlie Bowlie", 25, 30, "AsciiArt/Owl.txt");
+
+    AsciiPrinter screen = AsciiPrinter();
+    screen.updateMonsters(Deer.getAppearance(), Owl.getAppearance());
 
     while (playing == true) {
         std::cout << "Do you want to keep playing ( 1 )\nOr do you wish to exit the game ( 0 )" << std::endl;
