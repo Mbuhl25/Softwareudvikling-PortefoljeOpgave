@@ -27,19 +27,12 @@ void AsciiPrinter::updateEnviroment(std::string _environment) {
 void AsciiPrinter::printScreen() {
     std::cout << "+=============================================================+" << std::endl;
     std::cout << "|" << std::setw(62) << "|" << std::endl;
-    std::cout << "|" << std::setw(62) << "|" << std::endl;
-    std::cout << "|" << std::setw(62) << "|" << std::endl;
-    std::cout << "|" << std::setw(62) << "|" << std::endl;
-    std::cout << "|" << std::setw(62) << "|" << std::endl;
-    std::cout << "|" << std::setw(62) << "|" << std::endl;
-    std::cout << "|" << std::setw(62) << "|" << std::endl;
-    std::cout << "|" << std::setw(62) << "|" << std::endl;
-    std::cout << "|" << std::setw(62) << "|" << std::endl;
-    std::cout << "|" << std::setw(62) << "|" << std::endl;
-    std::cout << "|" << std::setw(62) << "|" << std::endl;
-    std::cout << "|" << std::setw(62) << "|" << std::endl;
-    std::cout << "|" << std::setw(62) << "|" << std::endl;
-    std::cout << "|" << std::setw(62) << "|" << std::endl;
+    std::cout << "|" << std::setw(25) << " " << std::setw(12) << " " << std::setw(25) << "|" << std::endl;
+    std::cout << "|" << std::setw(25) << " " << std::setw(12) << " " << std::setw(25) << "|" << std::endl;
+    std::cout << "|" << std::setw(25) << " " << std::setw(12) << " " << std::setw(25) << "|" << std::endl;
+    std::cout << "|" << std::setw(25) << " " << std::setw(12) << " " << std::setw(25) << "|" << std::endl;
+    std::cout << "|" << std::setw(25) << " " << std::setw(12) << " " << std::setw(25) << "|" << std::endl;
+    std::cout << "|" << std::setw(25) << " " << std::setw(12) << " " << std::setw(25) << "|" << std::endl;
     std::cout << "|" << std::setw(62) << "|" << std::endl;
     std::cout << "+=============================================================+" << std::endl;
     std::cout << "|" << std::setw(62) << "|" << std::endl;
