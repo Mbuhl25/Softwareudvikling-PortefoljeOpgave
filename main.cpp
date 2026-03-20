@@ -1,7 +1,9 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include <vector>
 #include "Character.h"
+#include "Monster.h"
 
 int main() {
     bool playing = true;
@@ -11,13 +13,14 @@ int main() {
     std::getline(std::cin, characterName);
     Character player = Character(characterName);
     std::cout << "Created new Character called " << player.getName() << std::endl;
-    while (playing == true) {
 
 
+    Monster Scorpion = Monster("Scorpion King", 5, 5);
+    Scorpion.takeDamage(3);
+    std::cout << Scorpion.getName() << " has this amount of HP: " << Scorpion.getHitPoints() << std::endl;
 
 
-
-        
+    while (playing == true) {        
         std::cout << "Do you want to keep playing ( 1 )\nOr do you wish to exit the game ( 0 )" << std::endl;
         std::string answer = "";
         std::getline(std::cin, answer);
