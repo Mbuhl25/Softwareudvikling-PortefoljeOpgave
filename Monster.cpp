@@ -2,10 +2,16 @@
 
 Monster::Monster() {}
 
-Monster::Monster(std::string _name, int _hitPoints, int _damge) {
+Monster::Monster(std::string _name, int _hitPoints, int _damge, std::string asciiArtPath) {
     name = _name;
     hitPoints = _hitPoints;
     damage = _damge;
+
+    std::ifstream asciiFile(asciiArtPath);
+    std::string asciiLine;
+    while (std::getline(asciiFile, asciiLine)) {
+        appearance.push_back(asciiLine);
+    }
 }
 
 std::string Monster::getName() {
@@ -18,6 +24,10 @@ int Monster::getHitPoints() {
 
 int Monster::getDamage() {
     return damage;
+}
+
+std::vector<std::string> Monster::getAppearance() {
+    return appearance;
 }
 
 void Monster::setName(std::string _name) {
