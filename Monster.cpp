@@ -8,6 +8,10 @@ Monster::Monster(std::string _name, int _hitPoints, int _damge, std::string asci
     damage = _damge;
 
     std::ifstream asciiFile(asciiArtPath);
+    if (asciiFile.fail()) {
+        std::cout << "Couldn't open file: " << asciiArtPath << std::endl;
+        exit(1);
+    }
     std::string asciiLine;
     while (std::getline(asciiFile, asciiLine)) {
         appearance.push_back(asciiLine);
