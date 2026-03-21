@@ -28,4 +28,17 @@ void AsciiPrinter::printScreen() {
     std::cout << "+============================================================+" << std::endl;
 }
 
+void AsciiPrinter::printInventory(std::vector<Monster> _monsters) {
+    std::cout << "+============================================================+" << std::endl;
+    for (int i = 0; i < _monsters[0].getAppearance().size(); ++i){
+        std::cout << std::left << std::setw(5) << "|"
+              << std::setw(20) << _monsters[0].getAppearance()[i] << std::setw(5) << "|"
+              << std::setw(20) << _monsters[1].getAppearance()[i] << std::setw(5) << "|"
+              << std::setw(20) << _monsters[2].getAppearance()[i] << std::setw(5) << "|"
+              << std::setw(20) << _monsters[3].getAppearance()[i] << std::setw(5) << "|"
+              << std::endl;
+    }
+    std::cout << "+============================================================+" << std::endl;
+}
+
 AsciiPrinter::~AsciiPrinter() {}
