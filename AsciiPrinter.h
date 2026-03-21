@@ -9,10 +9,12 @@ class AsciiPrinter {
         AsciiPrinter();
         std::string getName();
         void updateMonsters(std::vector<std::string>, std::vector<std::string>);
+        void printFightScreen();
         void printScreen();
         void printInventory(std::vector<Monster>);
         ~AsciiPrinter();
     private:
         std::vector<std::string> friendlyMonster;
         std::vector<std::string> enemyMonster;
+        int screenWidth;
 };
