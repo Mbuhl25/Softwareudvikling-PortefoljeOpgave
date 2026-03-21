@@ -4,21 +4,15 @@
 #include <iomanip>
 #include "AsciiPrinter.h"
 
-AsciiPrinter::AsciiPrinter() {
-    screenWidth = 51;
-    if (screenWidth < 51 || screenWidth % 2 == 0) {
-        std::cout << "ScreenWidth is either too small ( < 51 ), or even, which is illegal";
-        exit(1);
-    }
-}
+AsciiPrinter::AsciiPrinter() {}
 
-void AsciiPrinter::updateMonsters(std::vector<std::string> _friendlyMonster, std::vector<std::string> _enemyMonster) {
+void AsciiPrinter::setMonsters(std::vector<std::string> _friendlyMonster, std::vector<std::string> _enemyMonster) {
     friendlyMonster = _friendlyMonster;
-    enemyMonster = _enemyMonster;
-    
+    enemyMonster = _enemyMonster;   
 }
 
-void AsciiPrinter::printScreen() {
+void AsciiPrinter::printFightScreen() {
+    screenWidth = 51;
     std::cout << (screenWidth-20-20-5-5)/2 << std::endl;
     std::cout << "+"; for (int i = 1; i < screenWidth; ++i) {std::cout << "=";}; std::cout << "+" << std::endl;
     
@@ -41,6 +35,7 @@ void AsciiPrinter::printScreen() {
 }
 
 void AsciiPrinter::printInventory(std::vector<Monster> _monsters) {
+    screenWidth = 25*4;
     std::cout << "+============================================================+" << std::endl;
     for (int i = 0; i < _monsters[0].getAppearance().size(); ++i){
         std::cout << std::left << std::setw(5) << "|"
