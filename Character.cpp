@@ -10,7 +10,7 @@ std::string Character::getName() {
     return name;
 }
 
-std::vector<Monster> Character::getInventory() {
+std::vector<Monster>& Character::getInventory() {
     return inventory;
 }
 

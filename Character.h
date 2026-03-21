@@ -9,7 +9,7 @@ class Character {
         Character();
         Character(std::string);
         std::string getName();
-        std::vector<Monster> getInventory();
+        std::vector<Monster>& getInventory();
 
         bool addMonster(Monster);
         void setName(std::string);
