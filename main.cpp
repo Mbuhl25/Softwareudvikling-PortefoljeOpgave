@@ -60,11 +60,13 @@ int main() {
             std::cout << "invalid input, try again" << std::endl;
         }
     }
+    std::cout << "Your inventory currently looks like this: " << std::endl;
+    screen.printInventory(player.getInventory());
 
     while (playing == true) {        
         std::cout << "Do you want to keep playing ( 1 )\nOr do you wish to exit the game ( 0 )" << std::endl;
         std::string answer = "";
-        std::getline(std::cin, answer);
+        std::cin >> answer;
 
         if (answer == "0") {
             std::cout << "Thanks for playing\n" << std::endl;

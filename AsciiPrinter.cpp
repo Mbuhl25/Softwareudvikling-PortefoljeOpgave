@@ -34,15 +34,14 @@ void AsciiPrinter::printFightScreen() {
 }
 
 void AsciiPrinter::printInventory(std::vector<Monster> _monsters) {
-    screenWidth = 25*4;
-    std::cout << "+"; for (int i = 1; i < screenWidth; ++i) {std::cout << "=";}; std::cout << "+" << std::endl;
-    for (int i = 0; i < _monsters[0].getAppearance().size(); ++i){
-        std::cout << std::left << std::setw(5) << "|"
-              << std::setw(20) << _monsters[0].getAppearance()[i] << std::setw(5) << "|"
-              << std::setw(20) << _monsters[1].getAppearance()[i] << std::setw(5) << "|"
-              << std::setw(20) << _monsters[2].getAppearance()[i] << std::setw(5) << "|"
-              << std::setw(20) << _monsters[3].getAppearance()[i] << std::setw(5) << "|"
-              << std::endl;
+    screenWidth = 25*_monsters.size();
+    std::cout << "+"; for (int i = 1; i < screenWidth; ++i) {std::cout << "=";}; std::cout << "+" << std::endl;    
+    for (int line = 0; line < _monsters[0].getAppearance().size(); ++line){
+        std::cout << std::left << std::setw(5) << "|";
+        for (int i = 0; i < _monsters.size(); ++i){
+            std::cout << std::setw(20) << _monsters[i].getAppearance()[line] << std::setw(5) << "|";
+        }
+        std::cout << std::endl;
     }
     std::cout << "+"; for (int i = 1; i < screenWidth; ++i) {std::cout << "=";}; std::cout << "+" << std::endl;
 }
