@@ -20,9 +20,13 @@ bool Character::addMonster(Monster _monster) {
         return true;
     }
     else {
-        std::cout << "You already have 4 monsters. Choose one to replace: " << std::endl;
+        inventory.push_back(_monster);
         return false;
     }
+}
+
+void Character::removeMonster(int index) {
+    inventory.erase(inventory.begin() + index-1);
 }
 
 void Character::setName(std::string _name) {

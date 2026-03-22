@@ -8,6 +8,38 @@
 #include "AsciiPrinter.h"
 #include "Monster.h"
 
+void chooseMonster(Character& character, std::vector<Monster> monsterList, AsciiPrinter printer) {
+    std::vector<Monster> possibilitiesMonsters;
+    for (int i = 0; i < 3; ++i) {
+        std::random_device rd;
+        std::mt19937 randomGenerator(rd());
+        std::uniform_int_distribution<> randomMonsterNumber(0,monsterList.size()-1);
+        possibilitiesMonsters.push_back(monsterList[randomMonsterNumber(randomGenerator)]);
+    }
+    while (true) {
+        std::cout << "Choose your starter Monster: " << std::endl;
+        printer.printInventory(possibilitiesMonsters);
+        int numberChoice;
+        std::cin >> numberChoice;
+        if (numberChoice == 1 || numberChoice == 2 || numberChoice == 3) {
+            if (character.addMonster(possibilitiesMonsters[numberChoice-1])) {
+                break;
+            }
+            else {
+                std::cout << "You already have 4 monsters. Choose one to replace: " << std::endl;
+                printer.printInventory(character.getInventory());
+                std::cin >> numberChoice;
+                character.removeMonster(numberChoice);
+                break;
+            }
+        }
+        else {
+            std::cout << "invalid input, try again" << std::endl;
+        }
+    }
+}
+
+
 int main() {
     bool playing = true;
     std::string characterName = "Johnny";
@@ -32,34 +64,21 @@ int main() {
     Monster Spider     = Monster("Savage Spider",      15,  45, "AsciiArt/Spider.txt");
     Monster Squirrel   = Monster("Sneaky Squirrel",    25,  20, "AsciiArt/Squirrel.txt");
 
-    std::vector<Monster> allMonsters{Bat, Bee, Cat, Cockroach, Cow, Deer, Duckling, Elephant, Fish, Frog, Horse, Mouse, Owl, Penguin, Porcupine, Rabbit, Spider, Squirrel};
-    std::vector<Monster> starterMonsters;
-    for (int i = 0; i < 4; ++i) {
-        std::random_device rd;
-        std::mt19937 randomGenerator(rd());
-        std::uniform_int_distribution<> randomMonsterNumber(0,allMonsters.size()-1);
-        starterMonsters.push_back(allMonsters[randomMonsterNumber(randomGenerator)]);
-    }
+    std::vector<Monster> allMonsters{Bat, Bee, Cat, Cockroach, Cow, 
+                                    Deer, Duckling, Elephant, Fish,
+                                    Frog, Horse, Mouse, Owl, Penguin,
+                                    Porcupine, Rabbit, Spider, Squirrel};
 
     AsciiPrinter screen = AsciiPrinter();
 
-    while (true) {
-        std::cout << "Choose your starter Monster: " << std::endl;
-        screen.printInventory(starterMonsters);
-        int numberChoice;
-        std::cin >> numberChoice;
-        if (numberChoice == 1 || numberChoice == 2 || numberChoice == 3 || numberChoice == 4) {
-            if (!player.addMonster(starterMonsters[numberChoice-1])) {
-                screen.printInventory(player.getInventory());
-            }
-            else {
-                break;
-            }
-        }
-        else {
-            std::cout << "invalid input, try again" << std::endl;
-        }
-    }
+    screen.printInventory(allMonsters);
+
+    chooseMonster(player, allMonsters, screen);
+    chooseMonster(player, allMonsters, screen);
+    chooseMonster(player, allMonsters, screen);
+    chooseMonster(player, allMonsters, screen);
+    chooseMonster(player, allMonsters, screen);
+
     std::cout << "Your inventory currently looks like this: " << std::endl;
     screen.printInventory(player.getInventory());
 

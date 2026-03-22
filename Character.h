@@ -12,6 +12,7 @@ class Character {
         std::vector<Monster>& getInventory();
 
         bool addMonster(Monster);
+        void removeMonster(int);
         void setName(std::string);
         ~Character();
     private:
