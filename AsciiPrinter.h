@@ -12,6 +12,7 @@ class AsciiPrinter {
 
         void printFightScreen();
         void printInventory(std::vector<Monster>);
+        void printInventory2(std::vector<Monster>);
         ~AsciiPrinter();
     private:
         std::vector<std::string> friendlyMonster;
