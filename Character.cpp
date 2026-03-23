@@ -4,6 +4,8 @@ Character::Character() {}
 
 Character::Character(std::string _name) {
     name = _name;
+    Monster Worm       = Monster("Wiggly Worm",        5,   5, "AsciiArt/Worm.txt");
+    inventory.push_back(Worm);
 }
 
 std::string Character::getName() {
