@@ -8,20 +8,24 @@
 #include "AsciiPrinter.h"
 #include "Monster.h"
 
-void chooseMonster(Character& character, std::vector<Monster> monsterList, AsciiPrinter printer) {
+void chooseMonster(Character& character, std::vector<Monster>& monsterList, AsciiPrinter& printer, int possibilities) {
     std::vector<Monster> possibilitiesMonsters;
-    for (int i = 0; i < 3; ++i) {
+    for (int i = 0; i < possibilities; ++i) {
         std::random_device rd;
         std::mt19937 randomGenerator(rd());
         std::uniform_int_distribution<> randomMonsterNumber(0,monsterList.size()-1);
         possibilitiesMonsters.push_back(monsterList[randomMonsterNumber(randomGenerator)]);
     }
     while (true) {
-        std::cout << "Choose your starter Monster: " << std::endl;
+        if (possibilities == 1) {
+            character.addMonster(possibilitiesMonsters[0]);
+            break;
+        }
+        
         printer.printInventory(possibilitiesMonsters);
         int numberChoice;
         std::cin >> numberChoice;
-        if (numberChoice == 1 || numberChoice == 2 || numberChoice == 3) {
+        if (numberChoice >= 1 && numberChoice <= possibilities) {
             if (character.addMonster(possibilitiesMonsters[numberChoice-1])) {
                 break;
             }
@@ -42,61 +46,56 @@ void chooseMonster(Character& character, std::vector<Monster> monsterList, Ascii
 
 int main() {
     bool playing = true;
-    std::string characterName = "Johnny";
-    Character player = Character(characterName);
+    Character player = Character("Johnny");
+    Character enemy = Character("Cliff");
 
-    Monster Bat        = Monster("Benny Bat",          20,  15, "AsciiArt/Bat.txt");
-    Monster Bee        = Monster("Buzzing Bee",        10,  20, "AsciiArt/Bee.txt");
-    Monster Cat        = Monster("Clever Cat",         30,  25, "AsciiArt/Cat.txt");
-    Monster Cockroach  = Monster("Creepy Cockroach",   15,  10, "AsciiArt/Cockroach.txt");
-    Monster Cow        = Monster("oward Cow",         150,  35, "AsciiArt/Cow.txt");
-    Monster Deer       = Monster("Dashing Deer",      120,  30, "AsciiArt/Deer.txt");
-    Monster Duckling   = Monster("Dizzy Duckling",     15,   5, "AsciiArt/Duckling.txt");
-    Monster Elephant   = Monster("Enormous Elephant", 200,  50, "AsciiArt/Elephant.txt");
-    Monster Fish       = Monster("Flipping Fish",      20,  10, "AsciiArt/Fish.txt");
-    Monster Frog       = Monster("Fierce Frog",        25,  15, "AsciiArt/Frog.txt");
-    Monster Horse      = Monster("Hardy Horse",       160,  40, "AsciiArt/Horse.txt");
-    Monster Mouse      = Monster("Mighty Mouse",       10,  12, "AsciiArt/Mouse.txt");
-    Monster Owl        = Monster("Observant Owl",      35,  30, "AsciiArt/Owl.txt");
-    Monster Penguin    = Monster("Punchy Penguin",     40,  25, "AsciiArt/Penguin.txt");
-    Monster Porcupine  = Monster("Prickly Porcupine",  60,  35, "AsciiArt/Porcupine.txt");
-    Monster Rabbit     = Monster("Raging Rabbit",      20,  15, "AsciiArt/Rabbit.txt");
-    Monster Spider     = Monster("Savage Spider",      15,  45, "AsciiArt/Spider.txt");
-    Monster Squirrel   = Monster("Sneaky Squirrel",    25,  20, "AsciiArt/Squirrel.txt");
+    Monster Worm       = Monster("Wiggly Worm",        5,    5, "../AsciiArt/Worm.txt");
+    Monster Duckling   = Monster("Dizzy Duckling",     15,   5, "../AsciiArt/Duckling.txt");
+    Monster Cockroach  = Monster("Creepy Cockroach",   10,  10, "../AsciiArt/Cockroach.txt");
+    Monster Mouse      = Monster("Mighty Mouse",       10,  15, "../AsciiArt/Mouse.txt");
+    Monster Fish       = Monster("Flipping Fish",      20,  10, "../AsciiArt/Fish.txt");
+    Monster Spider     = Monster("Savage Spider",      15,  25, "../AsciiArt/Spider.txt");
+    Monster Rabbit     = Monster("Raging Rabbit",      20,  15, "../AsciiArt/Rabbit.txt");
+    Monster Frog       = Monster("Fierce Frog",        25,  15, "../AsciiArt/Frog.txt");
+    Monster Bee        = Monster("Buzzing Bee",        10,  20, "../AsciiArt/Bee.txt");
+    Monster Bat        = Monster("Benny Bat",          20,  15, "../AsciiArt/Bat.txt");
+    Monster Squirrel   = Monster("Sneaky Squirrel",    25,  20, "../AsciiArt/Squirrel.txt");   
+    Monster Penguin    = Monster("Punchy Penguin",     40,  25, "../AsciiArt/Penguin.txt");    
+    Monster Cat        = Monster("Clever Cat",         30,  25, "../AsciiArt/Cat.txt");
+    Monster Owl        = Monster("Observant Owl",      35,  30, "../AsciiArt/Owl.txt");
+    Monster Deer       = Monster("Dashing Deer",      120,  30, "../AsciiArt/Deer.txt");
+    Monster Porcupine  = Monster("Prickly Porcupine",  60,  35, "../AsciiArt/Porcupine.txt");
+    Monster Cow        = Monster("oward Cow",         150,  35, "../AsciiArt/Cow.txt");
+    Monster Horse      = Monster("Hardy Horse",       160,  40, "../AsciiArt/Horse.txt");
+    Monster Elephant   = Monster("Enormous Elephant", 200,  50, "../AsciiArt/Elephant.txt");
 
     std::vector<Monster> allMonsters{Bat, Bee, Cat, Cockroach, Cow, 
                                     Deer, Duckling, Elephant, Fish,
                                     Frog, Horse, Mouse, Owl, Penguin,
                                     Porcupine, Rabbit, Spider, Squirrel};
+    std::vector<Monster> tier1Monsters{Worm, Duckling, Cockroach, Mouse, Fish, Spider};
+    
 
     AsciiPrinter screen = AsciiPrinter();
+    std::cout << "Choose your 2 first starter Monsters: " << std::endl;
+    chooseMonster(player, tier1Monsters, screen, 3);
+    chooseMonster(player, tier1Monsters, screen, 3);
 
-    screen.printInventory(allMonsters);
+    std::cout << "Choose your opponent: " << std::endl;
+    chooseMonster(enemy, tier1Monsters, screen, 3);
 
-    chooseMonster(player, allMonsters, screen);
-    chooseMonster(player, allMonsters, screen);
-    chooseMonster(player, allMonsters, screen);
-    chooseMonster(player, allMonsters, screen);
-    chooseMonster(player, allMonsters, screen);
-
-    std::cout << "Your inventory currently looks like this: " << std::endl;
+    std::cout << "Entering Battle now: " << std::endl;
+    std::cout << "Which of your Monsters should start the fight? " << std::endl;
     screen.printInventory(player.getInventory());
+    int numberChoice;
+    std::cin >> numberChoice;
+    Monster playerActiveMonster = player.getInventory()[numberChoice-1];
+    Monster enemyActiveMonster = enemy.getInventory()[0];
+    screen.setMonsters(playerActiveMonster.getAppearance(), enemyActiveMonster.getAppearance());
 
-    while (playing == true) {        
-        std::cout << "Do you want to keep playing ( 1 )\nOr do you wish to exit the game ( 0 )" << std::endl;
-        std::string answer = "";
-        std::cin >> answer;
-
-        if (answer == "0") {
-            std::cout << "Thanks for playing\n" << std::endl;
-            break;
-        }
-        else if (answer == "1") {
-            std::cout << "Nu kæmper vi mod en fjende\n" << std::endl;
-            screen.printFightScreen();
-        }
-        else {
-            std::cout << "Invalid input!\n" << std::endl;
-        }
-    }
+    
+    std::random_device rd;
+    std::mt19937 randomGenerator(rd());
+    std::uniform_int_distribution<> fiftyFiftyChance(0,1);
+    screen.printFightScreen(playerActiveMonster.getName());
 }

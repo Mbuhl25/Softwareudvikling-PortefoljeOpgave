@@ -1,0 +1,3 @@
+/home/mbbu/bin/SCHOOL/2_semester/softwareudvikling/Software_udvikling-Portefolje_opgave/build/CMakeFiles/PokemonRipOff.dir
+/home/mbbu/bin/SCHOOL/2_semester/softwareudvikling/Software_udvikling-Portefolje_opgave/build/CMakeFiles/edit_cache.dir
+/home/mbbu/bin/SCHOOL/2_semester/softwareudvikling/Software_udvikling-Portefolje_opgave/build/CMakeFiles/rebuild_cache.dir
