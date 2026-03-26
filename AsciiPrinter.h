@@ -10,7 +10,7 @@ class AsciiPrinter {
         std::string getName();
         void setMonsters(std::vector<std::string>, std::vector<std::string>);
 
-        void printFightScreen();
+        void printFightScreen(std::string);
         void printInventory(std::vector<Monster>);
         void printInventory2(std::vector<Monster>);
         ~AsciiPrinter();

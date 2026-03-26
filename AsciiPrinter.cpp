@@ -11,7 +11,7 @@ void AsciiPrinter::setMonsters(std::vector<std::string> _friendlyMonster, std::v
     enemyMonster = _enemyMonster;   
 }
 
-void AsciiPrinter::printFightScreen() {
+void AsciiPrinter::printFightScreen(std::string monstersTurn) {
     screenWidth = 51; // Greater than 50 and uneven
     std::cout << "+"; for (int i = 1; i < screenWidth; ++i) {std::cout << "=";}; std::cout << "+" << std::endl;
     
@@ -28,7 +28,7 @@ void AsciiPrinter::printFightScreen() {
     }
     std::cout << "|" << std::setw(screenWidth) << "|" << std::endl;
     std::cout << "+"; for (int i = 1; i < screenWidth; ++i) {std::cout << "=";}; std::cout << "+" << std::endl;
-    std::cout << "|" << std::setw(screenWidth) << "|" << std::endl;
+    std::cout << "|" << std::left << std::setw(screenWidth-1) << "  It is now " + monstersTurn + "'s turn to make a move" << "|" << std::right << std::endl;
     std::cout << "|" << std::setw(screenWidth) << "|" << std::endl;
     std::cout << "+"; for (int i = 1; i < screenWidth; ++i) {std::cout << "=";}; std::cout << "+" << std::endl;
 }
