@@ -10,14 +10,14 @@ Projektet skal aflevers som en samlet zip fil indeholdende:
 Mappe med en linux executable, alt kode, CMakeLists.txt og .git folder.
 
 PDF Document med følgende indhold:
-    Gennemgang af hver iteration (programmets nuværende status, og udviklings flow)
-    Beskrivelse af det nuværende system.
-    Use Case Diagram, med Use Cases
-    Domain Model
-    Udvalgte Sekvens Diagrammer
-    UML - Class Diagram
-    Evt. Backlog
-    Git - Log*
+   * Gennemgang af hver iteration (programmets nuværende status, og udviklings flow)
+   * Beskrivelse af det nuværende system.
+   * Use Case Diagram, med Use Cases
+   * Domain Model
+   * Udvalgte Sekvens Diagrammer
+   * UML - Class Diagram
+   * Evt. Backlog
+   * Git - Log*
 
 ∗ For every new class there should at minimum be a commit.
 
