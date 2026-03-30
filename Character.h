@@ -10,7 +10,8 @@ class Character {
         Character(std::string);
         std::string getName();
         std::vector<Monster>& getInventory();
-
+        Monster getChosenMonster();
+        bool setChosenMonster(int);
         bool addMonster(Monster);
         void removeMonster(int);
         void setName(std::string);
@@ -18,4 +19,6 @@ class Character {
     private:
         std::string name;
         std::vector<Monster> inventory;
+        int activeMonster;
+        int inventorySize;
 };

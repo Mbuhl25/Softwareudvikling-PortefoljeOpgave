@@ -4,8 +4,7 @@ Character::Character() {}
 
 Character::Character(std::string _name) {
     name = _name;
-    Monster Worm       = Monster("Wiggly Worm",        5,   5, "AsciiArt/Worm.txt");
-    inventory.push_back(Worm);
+    inventorySize = 4;
 }
 
 std::string Character::getName() {
@@ -16,8 +15,22 @@ std::vector<Monster>& Character::getInventory() {
     return inventory;
 }
 
+Monster Character::getChosenMonster() {
+    return inventory[activeMonster];
+}
+
+bool Character::setChosenMonster(int idx) {
+    if (0 < idx || idx <= inventory.size()) {
+        activeMonster = idx-1;
+        
+        return true;
+    }
+    std::cout << "invalid input" << std::endl;
+    return false;
+}
+
 bool Character::addMonster(Monster _monster) {
-    if (inventory.size() < 4) {
+    if (inventory.size() < inventorySize) {
         inventory.push_back(_monster);
         return true;
     }

@@ -43,6 +43,13 @@ void chooseMonster(Character& character, std::vector<Monster>& monsterList, Asci
     }
 }
 
+int randomTurnHandler() {
+    std::random_device rd;
+    std::mt19937 randomGenerator(rd());
+    std::uniform_int_distribution<> fiftyFiftyChance(0,1);
+    return fiftyFiftyChance(randomGenerator);
+}
+
 
 int main() {
     bool playing = true;
@@ -81,21 +88,27 @@ int main() {
     chooseMonster(player, tier1Monsters, screen, 3);
     chooseMonster(player, tier1Monsters, screen, 3);
 
-    std::cout << "Choose your opponent: " << std::endl;
-    chooseMonster(enemy, tier1Monsters, screen, 3);
+    while (true){
+        std::cout << "Entering Battle now: " << std::endl;
+        std::cout << "Choose your opponent: " << std::endl;
+        std::cout << enemy.getInventory().size() << std::endl;
+        while (enemy.getInventory().size() > 0) {enemy.removeMonster(1);}
+        chooseMonster(enemy, tier1Monsters, screen, 3);
+        
+        std::cout << "Which of your Monsters should start the fight? " << std::endl;
+        screen.printInventory(player.getInventory());
+        int numberChoice;
+        std::cin >> numberChoice;
+        player.setChosenMonster(numberChoice);
 
-    std::cout << "Entering Battle now: " << std::endl;
-    std::cout << "Which of your Monsters should start the fight? " << std::endl;
-    screen.printInventory(player.getInventory());
-    int numberChoice;
-    std::cin >> numberChoice;
-    Monster playerActiveMonster = player.getInventory()[numberChoice-1];
-    Monster enemyActiveMonster = enemy.getInventory()[0];
-    screen.setMonsters(playerActiveMonster.getAppearance(), enemyActiveMonster.getAppearance());
+        std::vector<Character> fighters = {player, enemy};
+        screen.setMonsters(player.getChosenMonster().getAppearance(), enemy.getChosenMonster().getAppearance());
 
-    
-    std::random_device rd;
-    std::mt19937 randomGenerator(rd());
-    std::uniform_int_distribution<> fiftyFiftyChance(0,1);
-    screen.printFightScreen(playerActiveMonster.getName());
+
+        screen.printFightScreen(fighters[randomTurnHandler()].getChosenMonster().getName());
+
+
+        std::cin >> numberChoice;
+    }
+
 }
