@@ -6,13 +6,13 @@
 
 AsciiPrinter::AsciiPrinter() {}
 
-void AsciiPrinter::setMonsters(std::vector<std::string> _friendlyMonster, std::vector<std::string> _enemyMonster) {
+void AsciiPrinter::setMonsters(const std::vector<std::string>& _friendlyMonster, const std::vector<std::string>& _enemyMonster) {
     friendlyMonster = _friendlyMonster;
     enemyMonster = _enemyMonster;   
 }
 
-void AsciiPrinter::printFightScreen(std::string monstersTurn) {
-    screenWidth = 51; // Greater than 50 and uneven
+void AsciiPrinter::printFightScreen(const std::string& monstersTurn) const {
+    int screenWidth = 51; // Greater than 50 and uneven
     std::cout << "+"; for (int i = 1; i < screenWidth; ++i) {std::cout << "=";}; std::cout << "+" << std::endl;
     
     std::cout << std::right << "|" << std::setw(screenWidth) << "|" << std::endl;
@@ -33,8 +33,8 @@ void AsciiPrinter::printFightScreen(std::string monstersTurn) {
     std::cout << "+"; for (int i = 1; i < screenWidth; ++i) {std::cout << "=";}; std::cout << "+" << std::endl;
 }
 
-void AsciiPrinter::printInventory(std::vector<Monster> _monsters) {
-    screenWidth = 25*_monsters.size();
+void AsciiPrinter::printInventory(const std::vector<Monster>& _monsters) const {
+    int screenWidth = 25*_monsters.size();
     std::cout << "+"; for (int i = 1; i < screenWidth; ++i) {std::cout << "=";}; std::cout << "+" << std::endl;    
     for (int line = 0; line < _monsters[0].getAppearance().size(); ++line){
         std::cout << std::left << std::setw(5) << "|";

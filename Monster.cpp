@@ -1,4 +1,6 @@
 #include "Monster.h"
+#include <fstream>
+#include <iostream>
 
 Monster::Monster() {}
 
@@ -18,23 +20,23 @@ Monster::Monster(std::string _name, int _hitPoints, int _damge, std::string asci
     }
 }
 
-std::string Monster::getName() {
+const std::string& Monster::getName() const {
     return name;
 }
 
-int Monster::getHitPoints() {
+int Monster::getHitPoints() const {
     return hitPoints;
 }
 
-int Monster::getDamage() {
+int Monster::getDamage() const {
     return damage;
 }
 
-std::vector<std::string> Monster::getAppearance() {
+const std::vector<std::string>& Monster::getAppearance() const {
     return appearance;
 }
 
-void Monster::setName(std::string _name) {
+void Monster::setName(std::string& _name) {
     name = _name;
 }
 

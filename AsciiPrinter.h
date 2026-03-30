@@ -7,14 +7,12 @@
 class AsciiPrinter {
     public:
         AsciiPrinter();
-        std::string getName();
-        void setMonsters(std::vector<std::string>, std::vector<std::string>);
-
-        void printFightScreen(std::string);
-        void printInventory(std::vector<Monster>);
+        void setMonsters(const std::vector<std::string>&, const std::vector<std::string>&);
+        void printFightScreen(const std::string&) const;
+        void printInventory(const std::vector<Monster>&) const;
+        void printInventory(const std::vector<const Monster*>&) const;
         ~AsciiPrinter();
     private:
         std::vector<std::string> friendlyMonster;
         std::vector<std::string> enemyMonster;
-        int screenWidth;
 };

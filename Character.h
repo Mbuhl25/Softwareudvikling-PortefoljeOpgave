@@ -8,13 +8,19 @@ class Character {
     public:
         Character();
         Character(std::string);
-        std::string getName();
-        std::vector<Monster>& getInventory();
-        Monster getChosenMonster();
-        bool setChosenMonster(int);
-        bool addMonster(Monster);
-        void removeMonster(int);
-        void setName(std::string);
+
+        // Getters
+        const std::string& getName() const;
+        const std::vector<Monster>& getInventory() const;
+        const Monster& getChosenMonster() const;
+
+        // Modifiers
+        bool setChosenMonster(int index);
+        bool addMonster(const Monster& monster);
+        void removeMonster(int index);
+        void setName(const std::string& name);
+
+
         ~Character();
     private:
         std::string name;

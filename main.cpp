@@ -10,10 +10,12 @@
 
 void chooseMonster(Character& character, std::vector<Monster>& monsterList, AsciiPrinter& printer, int possibilities) {
     std::vector<Monster> possibilitiesMonsters;
+    std::random_device rd;
+    std::mt19937 randomGenerator(rd());
+    std::uniform_int_distribution<> randomMonsterNumber(0,monsterList.size()-1);
+    
     for (int i = 0; i < possibilities; ++i) {
-        std::random_device rd;
-        std::mt19937 randomGenerator(rd());
-        std::uniform_int_distribution<> randomMonsterNumber(0,monsterList.size()-1);
+        
         possibilitiesMonsters.push_back(monsterList[randomMonsterNumber(randomGenerator)]);
     }
     while (true) {
@@ -86,7 +88,7 @@ int main() {
     AsciiPrinter screen = AsciiPrinter();
     std::cout << "Choose your 2 first starter Monsters: " << std::endl;
     chooseMonster(player, tier1Monsters, screen, 3);
-    chooseMonster(player, tier1Monsters, screen, 3);
+//    chooseMonster(player, tier1Monsters, screen, 3);
 
     while (true){
         std::cout << "Entering Battle now: " << std::endl;
@@ -101,11 +103,11 @@ int main() {
         std::cin >> numberChoice;
         player.setChosenMonster(numberChoice);
 
-        std::vector<Character> fighters = {player, enemy};
+        std::vector<Character*> fighters = {&player, &enemy};
+        
         screen.setMonsters(player.getChosenMonster().getAppearance(), enemy.getChosenMonster().getAppearance());
 
-
-        screen.printFightScreen(fighters[randomTurnHandler()].getChosenMonster().getName());
+        screen.printFightScreen(fighters[randomTurnHandler()]->getChosenMonster().getName());
 
 
         std::cin >> numberChoice;

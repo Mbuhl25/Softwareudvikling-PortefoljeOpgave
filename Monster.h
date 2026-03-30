@@ -1,20 +1,21 @@
 // Monster Header file
 #include <string>
 #include <vector>
-#include <fstream>
-#include <iostream>
 #pragma once
 
 class Monster {
     public:
         Monster();
         Monster(std::string, int, int, std::string);
-        std::string getName();
-        int getHitPoints();
-        int getDamage();
-        std::vector<std::string> getAppearance();
+
+        // Getters
+        const std::string& getName() const;
+        int getHitPoints() const;
+        int getDamage() const;
+        const std::vector<std::string>& getAppearance() const;
         
-        void setName(std::string);
+        // Modifiers
+        void setName(std::string&);
         int takeDamage(int);
         ~Monster();
     private:
