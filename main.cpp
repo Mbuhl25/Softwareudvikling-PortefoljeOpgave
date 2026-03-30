@@ -58,25 +58,25 @@ int main() {
     Character player = Character("Johnny");
     Character enemy = Character("Cliff");
 
-    Monster Worm       = Monster("Wiggly Worm",        5,    5, "AsciiArt/Worm.txt");
-    Monster Duckling   = Monster("Dizzy Duckling",     15,   5, "AsciiArt/Duckling.txt");
-    Monster Cockroach  = Monster("Creepy Cockroach",   10,  10, "AsciiArt/Cockroach.txt");
-    Monster Mouse      = Monster("Mighty Mouse",       10,  15, "AsciiArt/Mouse.txt");
-    Monster Fish       = Monster("Flipping Fish",      20,  10, "AsciiArt/Fish.txt");
-    Monster Spider     = Monster("Savage Spider",      15,  25, "AsciiArt/Spider.txt");
-    Monster Rabbit     = Monster("Raging Rabbit",      20,  15, "AsciiArt/Rabbit.txt");
-    Monster Frog       = Monster("Fierce Frog",        25,  15, "AsciiArt/Frog.txt");
-    Monster Bee        = Monster("Buzzing Bee",        10,  20, "AsciiArt/Bee.txt");
-    Monster Bat        = Monster("Benny Bat",          20,  15, "AsciiArt/Bat.txt");
-    Monster Squirrel   = Monster("Sneaky Squirrel",    25,  20, "AsciiArt/Squirrel.txt");   
-    Monster Penguin    = Monster("Punchy Penguin",     40,  25, "AsciiArt/Penguin.txt");    
-    Monster Cat        = Monster("Clever Cat",         30,  25, "AsciiArt/Cat.txt");
-    Monster Owl        = Monster("Observant Owl",      35,  30, "AsciiArt/Owl.txt");
-    Monster Deer       = Monster("Dashing Deer",      120,  30, "AsciiArt/Deer.txt");
-    Monster Porcupine  = Monster("Prickly Porcupine",  60,  35, "AsciiArt/Porcupine.txt");
-    Monster Cow        = Monster("oward Cow",         150,  35, "AsciiArt/Cow.txt");
-    Monster Horse      = Monster("Hardy Horse",       160,  40, "AsciiArt/Horse.txt");
-    Monster Elephant   = Monster("Enormous Elephant", 200,  50, "AsciiArt/Elephant.txt");
+    Monster Worm       = Monster("Wiggly Worm",        5,    5, "../AsciiArt/Worm.txt");
+    Monster Duckling   = Monster("Dizzy Duckling",     15,   5, "../AsciiArt/Duckling.txt");
+    Monster Cockroach  = Monster("Creepy Cockroach",   10,  10, "../AsciiArt/Cockroach.txt");
+    Monster Mouse      = Monster("Mighty Mouse",       10,  15, "../AsciiArt/Mouse.txt");
+    Monster Fish       = Monster("Flipping Fish",      20,  10, "../AsciiArt/Fish.txt");
+    Monster Spider     = Monster("Savage Spider",      15,  25, "../AsciiArt/Spider.txt");
+    Monster Rabbit     = Monster("Raging Rabbit",      20,  15, "../AsciiArt/Rabbit.txt");
+    Monster Frog       = Monster("Fierce Frog",        25,  15, "../AsciiArt/Frog.txt");
+    Monster Bee        = Monster("Buzzing Bee",        10,  20, "../AsciiArt/Bee.txt");
+    Monster Bat        = Monster("Benny Bat",          20,  15, "../AsciiArt/Bat.txt");
+    Monster Squirrel   = Monster("Sneaky Squirrel",    25,  20, "../AsciiArt/Squirrel.txt");   
+    Monster Penguin    = Monster("Punchy Penguin",     40,  25, "../AsciiArt/Penguin.txt");    
+    Monster Cat        = Monster("Clever Cat",         30,  25, "../AsciiArt/Cat.txt");
+    Monster Owl        = Monster("Observant Owl",      35,  30, "../AsciiArt/Owl.txt");
+    Monster Deer       = Monster("Dashing Deer",      120,  30, "../AsciiArt/Deer.txt");
+    Monster Porcupine  = Monster("Prickly Porcupine",  60,  35, "../AsciiArt/Porcupine.txt");
+    Monster Cow        = Monster("oward Cow",         150,  35, "../AsciiArt/Cow.txt");
+    Monster Horse      = Monster("Hardy Horse",       160,  40, "../AsciiArt/Horse.txt");
+    Monster Elephant   = Monster("Enormous Elephant", 200,  50, "../AsciiArt/Elephant.txt");
 
     std::vector<Monster> allMonsters{Bat, Bee, Cat, Cockroach, Cow, 
                                     Deer, Duckling, Elephant, Fish,
