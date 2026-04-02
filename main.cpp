@@ -29,12 +29,13 @@ Monster Porcupine  = Monster("Prickly Porcupine",  60,  35, "./AsciiArt/Porcupin
 Monster Cow        = Monster("oward Cow",         150,  35, "./AsciiArt/Cow.txt");
 Monster Horse      = Monster("Hardy Horse",       160,  40, "./AsciiArt/Horse.txt");
 Monster Elephant   = Monster("Enormous Elephant", 200,  50, "./AsciiArt/Elephant.txt");
+Monster Dragon     = Monster("Enormous Elephant", 200, 150, "./AsciiArt/Dragon.txt");
 
 // Make list that works for different categories (all, weak, strong)
 std::vector<Monster> allMonsters{Bat, Bee, Cat, Cockroach, Cow, 
                                 Deer, Duckling, Elephant, Fish,
                                 Frog, Horse, Mouse, Owl, Penguin,
-                                Porcupine, Rabbit, Spider, Squirrel};
+                                Porcupine, Rabbit, Spider, Squirrel, Dragon};
 std::vector<Monster> tier1Monsters{Worm, Duckling, Cockroach, Mouse, Fish};
 
 AsciiPrinter screen = AsciiPrinter();
@@ -87,7 +88,7 @@ int randomTurnHandler() {
         std::string input;
         std::cin >> input;
         Character newplayer = Character(input);
-        std::cout << "Choose the Starter Monster for " << newplayer.getName() << std::endl;
+        std::cout << "Choose two Starter Monsters for " << newplayer.getName() << std::endl;
         chooseMonster(newplayer, tier1Monsters, 3);
         chooseMonster(newplayer, tier1Monsters, 3);
         return newplayer;
@@ -138,7 +139,27 @@ void fightEnemy(Character& player) {
                     break;
             }
             fighting = false;
-        } else if (randomTurn == 0) {
+        } else if (player.getChosenMonster().getStatus() == 0) {
+            std::cout << "Your Monster just died" << std::endl;
+            for (int i = 0; i < player.getInventory().size(); ++i) {
+                if (player.getInventory()[i].getStatus() == 0) {
+                    player.removeMonster(i);
+                }
+            }
+            if (player.getInventory().empty()) {
+                std::cout << "You have lost all of you Monsters, and your character is dead\n" << std::endl;
+                break;
+            }
+            std::cout << "Which of your Monsters should be swapped into the fight " << std::endl;
+            screen.printInventory(player.getInventory());
+            // a loop to make sure, a correct input is given
+            int numberChoice;
+            do {
+                std::cin >> numberChoice;
+            } while (!player.setChosenMonster(numberChoice));
+        }
+        
+        else if (randomTurn == 0) {
             screen.printFightScreen(player.getChosenMonster(), enemy.getChosenMonster(), randomTurn);
             std::cin >> numberChoice;
             switch (numberChoice){
@@ -178,8 +199,8 @@ int main() {
     Character player = Character("");
     while (true) {
         std::cout << "This is the main menu" << std::endl;
-        if (player.getName() == "") {
-            std::cout << "Since you dont have a Character yet, you have to create one now" << std::endl;
+        if (player.getInventory().empty()) {
+            std::cout << "Since you dont have a Character, you have to create one now" << std::endl;
             player = createCharacter();
         }
 
