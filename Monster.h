@@ -13,7 +13,7 @@ class Monster {
         int getHitPoints() const;
         int getDamage() const;
         const std::vector<std::string>& getAppearance() const;
-        
+        bool getStatus() const;
         // Modifiers
         void setName(std::string&);
         int takeDamage(int);
@@ -23,4 +23,5 @@ class Monster {
         int hitPoints;
         int damage;
         std::vector<std::string> appearance;
+        bool alive;
 };

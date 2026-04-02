@@ -58,11 +58,11 @@ int main() {
     Character player = Character("Johnny");
 
     // Initialize an object for every monster
-    Monster Worm       = Monster("Wiggly Worm",        225,    5, "./AsciiArt/Worm.txt");
-    Monster Duckling   = Monster("Dizzy Duckling",     215,   5, "./AsciiArt/Duckling.txt");
-    Monster Cockroach  = Monster("Creepy Cockroach",   210,  10, "./AsciiArt/Cockroach.txt");
-    Monster Mouse      = Monster("Mighty Mouse",       210,  15, "./AsciiArt/Mouse.txt");
-    Monster Fish       = Monster("Flipping Fish",      220,  10, "./AsciiArt/Fish.txt");
+    Monster Worm       = Monster("Wiggly Worm",        25,    5, "./AsciiArt/Worm.txt");
+    Monster Duckling   = Monster("Dizzy Duckling",     15,   5, "./AsciiArt/Duckling.txt");
+    Monster Cockroach  = Monster("Creepy Cockroach",   10,  10, "./AsciiArt/Cockroach.txt");
+    Monster Mouse      = Monster("Mighty Mouse",       10,  15, "./AsciiArt/Mouse.txt");
+    Monster Fish       = Monster("Flipping Fish",      120,  10, "./AsciiArt/Fish.txt");
     Monster Spider     = Monster("Savage Spider",      15,  25, "./AsciiArt/Spider.txt");
     Monster Rabbit     = Monster("Raging Rabbit",      20,  15, "./AsciiArt/Rabbit.txt");
     Monster Frog       = Monster("Fierce Frog",        25,  15, "./AsciiArt/Frog.txt");
@@ -90,13 +90,13 @@ int main() {
 
     std::cout << "Choose your starter Monster: " << std::endl;
     chooseMonster(player, tier1Monsters, screen, 3);
-    player.addMonster(Deer);
 
     while (true){
         Character enemy = Character("Cliff");
         std::cout << "Choose the monster of your opponent, " << enemy.getName() << ": " << std::endl;
         chooseMonster(enemy, tier1Monsters, screen, 3);
         
+        if (player.getInventory().size() == 0){ break; }
         std::cout << "Which of your Monsters should start the fight? " << std::endl;
         screen.printInventory(player.getInventory());
         
@@ -117,6 +117,16 @@ int main() {
             fighters[!randomTurn]->getChosenMonster().takeDamage(fighters[randomTurn]->getChosenMonster().getDamage());
             randomTurn = !randomTurn;
         }
+        screen.setMonsters(player.getChosenMonster(), enemy.getChosenMonster());
+        screen.printFightScreen(fighters[randomTurn]->getChosenMonster().getName());
+
+        for (int i = 0; i < player.getInventory().size(); ++i) {
+            std::cout << "Looking at " << player.getInventory()[i].getName() << " Which is " << player.getInventory()[i].getStatus() << std::endl;
+            if (!player.getInventory()[i].getStatus()) {
+
+                std::cout << player.getChosenMonster().getStatus() << std::endl;
+                player.removeMonster(i+1);
+            }
+        }
     }
-    
 }
