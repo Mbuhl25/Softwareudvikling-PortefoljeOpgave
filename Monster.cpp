@@ -7,6 +7,7 @@ Monster::Monster() {}
 Monster::Monster(std::string _name, int _hitPoints, int _damge, std::string asciiArtPath) {
     name = _name;
     hitPoints = _hitPoints;
+    maxHitPoints = _hitPoints;
     damage = _damge;
     alive = true;
 
@@ -27,6 +28,10 @@ const std::string& Monster::getName() const {
 
 int Monster::getHitPoints() const {
     return hitPoints;
+}
+
+int Monster::getMaxHitPoints() const {
+    return maxHitPoints;
 }
 
 int Monster::getDamage() const {
@@ -50,6 +55,12 @@ int Monster::takeDamage(int damage) {
     if (hitPoints <= 0) {
         alive = false;
     }
+    return hitPoints;
+}
+
+int Monster::revive() {
+    hitPoints = maxHitPoints;
+    alive = true;
     return hitPoints;
 }
 

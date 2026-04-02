@@ -65,13 +65,12 @@ void chooseMonster(Character& character, std::vector<Monster>& monsterList, int 
                 std::cout << "You already have 4 monsters. Choose one to replace: " << std::endl;
                 screen.printInventory(character.getInventory());
                 std::cin >> numberChoice;
-                character.removeMonster(numberChoice);
+                character.removeMonster(numberChoice-1);
                 break;
             }
         }
         else {
             std::cout << "invalid input, try again" << std::endl;
-            std::cin >> numberChoice;
         }
     }
 }
@@ -90,7 +89,7 @@ int randomTurnHandler() {
         Character newplayer = Character(input);
         std::cout << "Choose the Starter Monster for " << newplayer.getName() << std::endl;
         chooseMonster(newplayer, tier1Monsters, 3);
-        newplayer.addMonster(Elephant);
+        chooseMonster(newplayer, tier1Monsters, 3);
         return newplayer;
     }
 
@@ -113,8 +112,33 @@ void fightEnemy(Character& player) {
 
     int randomTurn = randomTurnHandler();
 
-    while (player.getChosenMonster().getHitPoints() > 0 && enemy.getChosenMonster().getHitPoints() > 0) {
-        if (randomTurn == 0) {
+    bool fighting = true;
+    while (fighting) {
+        if (enemy.getChosenMonster().getStatus() == 0) {
+            randomTurn = 2;
+            screen.printFightScreen(player.getChosenMonster(), enemy.getChosenMonster(), randomTurn);
+            std::cin >> numberChoice;
+            switch (numberChoice){
+                case 1:
+                    enemy.getChosenMonster().revive();
+                    if (player.addMonster(enemy.getChosenMonster())) {
+                        break;
+                    }
+                    else {
+                        std::cout << "You already have 4 monsters. Choose one to replace: " << std::endl;
+                        screen.printInventory(player.getInventory());
+                        std::cin >> numberChoice;
+                        player.removeMonster(numberChoice-1);
+                        break;
+                    }
+                    enemy.removeMonster(0);
+                    break;
+                case 2:
+                    std::cout << "Going back to the main menu" << std::endl;
+                    break;
+            }
+            fighting = false;
+        } else if (randomTurn == 0) {
             screen.printFightScreen(player.getChosenMonster(), enemy.getChosenMonster(), randomTurn);
             std::cin >> numberChoice;
             switch (numberChoice){
@@ -122,6 +146,10 @@ void fightEnemy(Character& player) {
                     fighters[!randomTurn]->getChosenMonster().takeDamage(fighters[randomTurn]->getChosenMonster().getDamage());
                     break;
                 case 2:
+                    std::cout << "Which of your Monsters should be swapped into the fight " << std::endl;
+                    screen.printInventory(player.getInventory());
+                    // a loop to make sure, a correct input is given
+                    int numberChoice;
                     do {
                         std::cin >> numberChoice;
                     } while (!player.setChosenMonster(numberChoice));
@@ -139,7 +167,7 @@ void fightEnemy(Character& player) {
     for (int i = 0; i < player.getInventory().size(); ++i) {
         if (!player.getInventory()[i].getStatus()) {
             std::cout << player.getChosenMonster().getStatus() << std::endl;
-            player.removeMonster(i+1);
+            player.removeMonster(i);
         }
     }
 }
