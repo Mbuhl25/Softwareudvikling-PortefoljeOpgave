@@ -6,7 +6,7 @@
 
 AsciiPrinter::AsciiPrinter() {}
 
-void AsciiPrinter::setMonsters(const std::vector<std::string>& _friendlyMonster, const std::vector<std::string>& _enemyMonster) {
+void AsciiPrinter::setMonsters(const Monster& _friendlyMonster, const Monster& _enemyMonster) {
     friendlyMonster = _friendlyMonster;
     enemyMonster = _enemyMonster;   
 }
@@ -16,17 +16,24 @@ void AsciiPrinter::printFightScreen(const std::string& monstersTurn) const {
     std::cout << "+"; for (int i = 1; i < screenWidth; ++i) {std::cout << "=";}; std::cout << "+" << std::endl;
     
     std::cout << std::right << "|" << std::setw(screenWidth) << "|" << std::endl;
-    for (int i = 0; i < friendlyMonster.size(); ++i){
+    for (int i = 0; i < friendlyMonster.getAppearance().size(); ++i){
         std::cout << std::left
             << std::setw(5) << "|"
-            << std::setw(20) << friendlyMonster[i]
+            << std::setw(20) << friendlyMonster.getAppearance()[i]
             << std::setw((screenWidth-20-20-5-5)/2)<< ""
             << std::setw(6)<< "VS"
             << std::setw((screenWidth-20-20-5-5)/2)<< ""
-            << std::setw(20) << enemyMonster[i]
+            << std::setw(20) << enemyMonster.getAppearance()[i]
             << std::right << "|" << std::endl;
     }
     std::cout << "|" << std::setw(screenWidth) << "|" << std::endl;
+    std::cout << std::left << std::setw(5) << "|"
+        << std::setw(4) << "HP: " << std::setw(16) << friendlyMonster.getHitPoints()
+        << std::setw((screenWidth-20-20-5-5)/2)<< ""
+        << std::setw(6)<< "VS"
+        << std::setw((screenWidth-20-20-5-5)/2)<< ""
+        << std::setw(4) << "HP: " << std::setw(16) << enemyMonster.getHitPoints()
+        << std::right << "|" << std::endl;
     std::cout << "+"; for (int i = 1; i < screenWidth; ++i) {std::cout << "=";}; std::cout << "+" << std::endl;
     std::cout << "|" << std::left << std::setw(screenWidth-1) << "  It is now " + monstersTurn + "'s turn to make a move" << "|" << std::right << std::endl;
     std::cout << "|" << std::setw(screenWidth) << "|" << std::endl;

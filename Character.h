@@ -12,7 +12,7 @@ class Character {
         // Getters
         const std::string& getName() const;
         const std::vector<Monster>& getInventory() const;
-        const Monster& getChosenMonster() const;
+        Monster& getChosenMonster();
 
         // Modifiers
         bool setChosenMonster(int index);

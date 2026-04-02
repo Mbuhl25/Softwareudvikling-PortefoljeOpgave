@@ -15,7 +15,6 @@ void chooseMonster(Character& character, std::vector<Monster>& monsterList, Asci
     std::uniform_int_distribution<> randomMonsterNumber(0,monsterList.size()-1);
     
     for (int i = 0; i < possibilities; ++i) {
-        
         possibilitiesMonsters.push_back(monsterList[randomMonsterNumber(randomGenerator)]);
     }
     while (true) {
@@ -41,6 +40,7 @@ void chooseMonster(Character& character, std::vector<Monster>& monsterList, Asci
         }
         else {
             std::cout << "invalid input, try again" << std::endl;
+            std::cin >> numberChoice;
         }
     }
 }
@@ -58,11 +58,11 @@ int main() {
     Character player = Character("Johnny");
 
     // Initialize an object for every monster
-    Monster Worm       = Monster("Wiggly Worm",        5,    5, "./AsciiArt/Worm.txt");
-    Monster Duckling   = Monster("Dizzy Duckling",     15,   5, "./AsciiArt/Duckling.txt");
-    Monster Cockroach  = Monster("Creepy Cockroach",   10,  10, "./AsciiArt/Cockroach.txt");
-    Monster Mouse      = Monster("Mighty Mouse",       10,  15, "./AsciiArt/Mouse.txt");
-    Monster Fish       = Monster("Flipping Fish",      20,  10, "./AsciiArt/Fish.txt");
+    Monster Worm       = Monster("Wiggly Worm",        225,    5, "./AsciiArt/Worm.txt");
+    Monster Duckling   = Monster("Dizzy Duckling",     215,   5, "./AsciiArt/Duckling.txt");
+    Monster Cockroach  = Monster("Creepy Cockroach",   210,  10, "./AsciiArt/Cockroach.txt");
+    Monster Mouse      = Monster("Mighty Mouse",       210,  15, "./AsciiArt/Mouse.txt");
+    Monster Fish       = Monster("Flipping Fish",      220,  10, "./AsciiArt/Fish.txt");
     Monster Spider     = Monster("Savage Spider",      15,  25, "./AsciiArt/Spider.txt");
     Monster Rabbit     = Monster("Raging Rabbit",      20,  15, "./AsciiArt/Rabbit.txt");
     Monster Frog       = Monster("Fierce Frog",        25,  15, "./AsciiArt/Frog.txt");
@@ -83,13 +83,14 @@ int main() {
                                     Deer, Duckling, Elephant, Fish,
                                     Frog, Horse, Mouse, Owl, Penguin,
                                     Porcupine, Rabbit, Spider, Squirrel};
-    std::vector<Monster> tier1Monsters{Worm, Duckling, Cockroach, Mouse, Fish, Spider};
+    std::vector<Monster> tier1Monsters{Worm, Duckling, Cockroach, Mouse, Fish};
     
 
     AsciiPrinter screen = AsciiPrinter();
 
     std::cout << "Choose your starter Monster: " << std::endl;
     chooseMonster(player, tier1Monsters, screen, 3);
+    player.addMonster(Deer);
 
     while (true){
         Character enemy = Character("Cliff");
@@ -98,19 +99,24 @@ int main() {
         
         std::cout << "Which of your Monsters should start the fight? " << std::endl;
         screen.printInventory(player.getInventory());
+        
+        // a loop to make sure, a correct input is given
         int numberChoice;
         do {
             std::cin >> numberChoice;
         } while (!player.setChosenMonster(numberChoice));
 
         std::vector<Character*> fighters = {&player, &enemy};
-        
-        screen.setMonsters(player.getChosenMonster().getAppearance(), enemy.getChosenMonster().getAppearance());
 
-        screen.printFightScreen(fighters[randomTurnHandler()]->getChosenMonster().getName());
+        int randomTurn = randomTurnHandler();
 
-        // Just wait for player input
-        std::cin >> numberChoice;
+        while (player.getChosenMonster().getHitPoints() > 0 && enemy.getChosenMonster().getHitPoints() > 0) {
+            screen.setMonsters(player.getChosenMonster(), enemy.getChosenMonster());
+            screen.printFightScreen(fighters[randomTurn]->getChosenMonster().getName());
+            std::cin >> numberChoice;
+            fighters[!randomTurn]->getChosenMonster().takeDamage(fighters[randomTurn]->getChosenMonster().getDamage());
+            randomTurn = !randomTurn;
+        }
     }
-
+    
 }

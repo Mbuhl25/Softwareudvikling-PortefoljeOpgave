@@ -17,7 +17,7 @@ const std::vector<Monster>& Character::getInventory() const{
     return inventory;
 }
 
-const Monster& Character::getChosenMonster() const {
+Monster& Character::getChosenMonster() {
     if (activeMonster < 0 || activeMonster >= inventory.size()) {
         throw std::logic_error("No active monster selected");
     }
@@ -28,7 +28,6 @@ const Monster& Character::getChosenMonster() const {
 bool Character::setChosenMonster(int idx) {
     if (0 < idx && idx <= inventory.size()) {
         activeMonster = idx-1;
-        std::cout << "ooooo: " << activeMonster << std::endl;
         return true;
     }
     std::cout << "invalid input" << std::endl;
