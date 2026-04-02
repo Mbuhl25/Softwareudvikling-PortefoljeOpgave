@@ -6,15 +6,23 @@
 
 AsciiPrinter::AsciiPrinter() {}
 
-void AsciiPrinter::setMonsters(const Monster& _friendlyMonster, const Monster& _enemyMonster) {
-    friendlyMonster = _friendlyMonster;
-    enemyMonster = _enemyMonster;   
-}
-
-void AsciiPrinter::printFightScreen(const std::string& monstersTurn) const {
+void AsciiPrinter::printFightScreen(const Monster& _friendlyMonster, const Monster& _enemyMonster, const int monsterturn) {
     int screenWidth = 71; // Greater than 50 and uneven
+
+    friendlyMonster = _friendlyMonster;
+    enemyMonster = _enemyMonster;
+    std::string displayName;
+    if (monsterturn == 0) {
+        displayName = friendlyMonster.getName();
+    } else if (monsterturn == 1) {
+        displayName = enemyMonster.getName();
+    }
+
     std::cout << "+"; for (int i = 1; i < screenWidth; ++i) {std::cout << "=";}; std::cout << "+" << std::endl;
     
+    std::cout << "|" << std::left << std::setw(screenWidth-1) << "  It is now " + displayName + "'s turn to make a move" << "|" << std::right << std::endl;
+    std::cout << "|" << std::setw(screenWidth) << "|" << std::endl;
+    std::cout << "+"; for (int i = 1; i < screenWidth; ++i) {std::cout << "=";}; std::cout << "+" << std::endl;
     std::cout << std::right << "|" << std::setw(screenWidth) << "|" << std::endl;
     for (int i = 0; i < friendlyMonster.getAppearance().size(); ++i){
         std::cout << std::left
@@ -30,13 +38,28 @@ void AsciiPrinter::printFightScreen(const std::string& monstersTurn) const {
     std::cout << std::left << std::setw(5) << "|"
         << std::setw(4) << "HP: " << std::setw(16) << friendlyMonster.getHitPoints()
         << std::setw((screenWidth-20-20-5-5)/2)<< ""
-        << std::setw(6)<< "VS"
+        << std::setw(6)<< ""
         << std::setw((screenWidth-20-20-5-5)/2)<< ""
         << std::setw(4) << "HP: " << std::setw(16) << enemyMonster.getHitPoints()
         << std::right << "|" << std::endl;
+    std::cout << std::left << std::setw(5) << "|"
+        << std::setw(10) << "Strength: " << std::setw(10) << friendlyMonster.getDamage()
+        << std::setw((screenWidth-20-20-5-5)/2)<< ""
+        << std::setw(6)<< " "
+        << std::setw((screenWidth-20-20-5-5)/2)<< ""
+        << std::setw(10) << "Strength: " << std::setw(10) << enemyMonster.getDamage()
+        << std::right << "|" << std::endl;
+    
+    
     std::cout << "+"; for (int i = 1; i < screenWidth; ++i) {std::cout << "=";}; std::cout << "+" << std::endl;
-    std::cout << "|" << std::left << std::setw(screenWidth-1) << "  It is now " + monstersTurn + "'s turn to make a move" << "|" << std::right << std::endl;
-    std::cout << "|" << std::setw(screenWidth) << "|" << std::endl;
+    if (monsterturn == 0) {
+        std::cout << "|" << std::left << std::setw(screenWidth-1) << "  What would you like to do?" << "|" << std::right << std::endl;
+        std::cout << "|" << std::left << std::setw(screenWidth-1) << "    [1] Attack" << "|" << std::right << std::endl;
+        std::cout << "|" << std::left << std::setw(screenWidth-1) << "    [2] Switch Monster" << "|" << std::right << std::endl;
+    } else if (monsterturn == 1) {
+        std::cout << "|" << std::left << std::setw(screenWidth-1) << "  " + displayName + " Chooses to attack" << "|" << std::right << std::endl;
+    }
+
     std::cout << "+"; for (int i = 1; i < screenWidth; ++i) {std::cout << "=";}; std::cout << "+" << std::endl;
 }
 

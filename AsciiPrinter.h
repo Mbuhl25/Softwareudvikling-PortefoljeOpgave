@@ -7,8 +7,7 @@
 class AsciiPrinter {
     public:
         AsciiPrinter();
-        void setMonsters(const Monster&, const Monster&);
-        void printFightScreen(const std::string&) const;
+        void printFightScreen(const Monster&, const Monster&, const int);
         void printInventory(const std::vector<Monster>&) const;
         void printInventory(const std::vector<const Monster*>&) const;
         ~AsciiPrinter();
