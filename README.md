@@ -44,7 +44,7 @@ Den første iteration af systemet skal kunne klare følgende funktionalitet:
 * En ny “karakter” starter med to “hest” (valgfrit)
 
 
-# Monster liste
+## Monster liste
 
 Den følgende liste af "monstre” er givet som eksempel, men må gerne ændres: 
 
@@ -56,4 +56,54 @@ Den følgende liste af "monstre” er givet som eksempel, men må gerne ændres:
 * ”Abe Kongen”, hp 30, styrke 5 
 * ”Enhjørning”, hp 50, styrke 8 
 * ”Drage”, hp 100, styrke 10 
+
+# Anden Iteration
+
+Til anden iteration skal spillet gøres mere interessant, så kampsystemet ikke er helt simpelt. Der skal derfor tilføjes “Ting”, “Status” og “Grotter”.
+
+“Ting” kan bruges i stedet for angreb og har kun inflydelse undervejs i kampen.
+
+“Status” bliver givet til et monster undervejs i kampen vha “Ting” og bliver udført i starten af hver monsters tur.
+
+“TIng” bliver skaffet ved at gennemføre “Grotter” som er en samling af “Monstre” ligesom spilleren.
+
+ 
+
+Den anden iteration af systemet skal kunne klare følgende funktionalitet: 
+
+*Monstre skal kunne have “Ting” som har effekter der kan bruges i stedet for angreb
+* Spilleren kan give “Ting” til monstre
+* “Ting” kan give “Status” til monstret selv eller modstanderen
+* “Monstre” kan have mange “Ting” og mange “Status”
+* Hver “Status” bliver afviklet i starten af monster tur
+* Der skal tilføjes grotter som spilleren kan vælge at kæmpe i mod.
+* “Grotter har en samling af monstre ligesom en spiller og alle monstre skal besejres for at færdiggøre grotten
+* Ved at besejre “Grotter” får spilleren en Ting som kan gives til et af sine monstre
+* Grotter skal generes automatisk så de passer til spillerens niveau af monstre.
+
+Noter:
+
+* Fjendtlige monstre behøver ikke at bruge items (men i må gerne inkludere det og lave en strategi for det)
+* Man behøver ikke at kunne fjerne “Ting” fra monstre
+* I må selv vælge om monstre har en maks grænse af ting
+* Ideerne nedenunder er til inspiration, i kan frit tilføje eller ændre
+
+
+## Ideer til "Ting"
+
+* Bombe: Giver 10 skade
+* Ildbombe: Giver 5 skade og 35% sansynlighed for Stunned
+* Tordenbombe: Giver 10 skade og 50% for Paralyzed
+* Kølle: Giver 20 skade
+* Blæser: 80% for Frozen
+* Forbandelse: Hvis fjenden har en status allerede så er sansynligheden for Curse 100% ellers 20%
+* Gift: Hvis fjenden har modtaget skade, så er sansynligheden for Poison 100% ellers 20%
+
+## Ideer til "Status"
+
+* Poisoned – Takes small damage each turn.
+* Frozen – Cannot act for 1–2 turns.
+* Paralyzed – 30% chance to lose turn.
+* Stunned – Guaranteed to miss next turn.
+* Cursed – Takes damage when dealing damage.
 
