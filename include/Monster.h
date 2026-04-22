@@ -1,7 +1,9 @@
 // Monster Header file
+#ifndef MONSTER_H
+#define MONSTER_H
+
 #include <string>
 #include <vector>
-#pragma once
 
 class Monster {
     public:
@@ -28,3 +30,4 @@ class Monster {
         std::vector<std::string> appearance;
         bool alive;
 };
+#endif

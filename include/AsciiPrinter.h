@@ -1,4 +1,7 @@
 // ConsolePrinter Header file
+#ifndef ASCIIPRINTER_H
+#define ASCIIPRINTER_H
+
 #include <string>
 #include <vector>
 #include "Monster.h"
@@ -15,3 +18,4 @@ class AsciiPrinter {
         Monster friendlyMonster;
         Monster enemyMonster;
 };
+#endif

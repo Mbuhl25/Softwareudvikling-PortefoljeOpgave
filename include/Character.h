@@ -1,4 +1,7 @@
 // Character Header file
+#ifndef CHARACTER_H
+#define CHARACTER_H
+
 #include <string>
 #include <vector>
 #include "Monster.h"
@@ -28,3 +31,4 @@ class Character {
         int activeMonster;
         int inventorySize;
 };
+#endif
