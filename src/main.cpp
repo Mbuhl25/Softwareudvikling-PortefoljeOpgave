@@ -41,6 +41,7 @@ std::vector<Monster> tier1Monsters{Worm, Duckling, Cockroach, Mouse, Fish};
 AsciiPrinter screen = AsciiPrinter();
 
 void chooseMonster(Character& character, std::vector<Monster>& monsterList, int possibilities) {
+    // Generate a list of random monsters from the monsterList
     std::vector<Monster> possibilitiesMonsters;
     std::random_device rd;
     std::mt19937 randomGenerator(rd());
@@ -49,29 +50,37 @@ void chooseMonster(Character& character, std::vector<Monster>& monsterList, int 
     for (int i = 0; i < possibilities; ++i) {
         possibilitiesMonsters.push_back(monsterList[randomMonsterNumber(randomGenerator)]);
     }
+
     while (true) {
+        // If only one option is given, no choices are required, and the one monster is added to the inventory.
         if (possibilities == 1) {
             character.addMonster(possibilitiesMonsters[0]);
             break;
         }
-        
         screen.printInventory(possibilitiesMonsters);
         int numberChoice;
         std::cin >> numberChoice;
+        // Check for valid input
         if (numberChoice >= 1 && numberChoice <= possibilities) {
             if (character.addMonster(possibilitiesMonsters[numberChoice-1])) {
-                break;
+                return;
             }
             else {
-                std::cout << "You already have 4 monsters. Choose one to replace: " << std::endl;
-                screen.printInventory(character.getInventory());
-                std::cin >> numberChoice;
-                character.removeMonster(numberChoice-1);
-                break;
+                while (true) {
+                    std::cout << "You already have " << character.getInventorySize() << " monsters. Choose one to replace: " << std::endl;
+                    screen.printInventory(character.getInventory());
+                    std::cin >> numberChoice;
+                    if (numberChoice >= 1 && numberChoice <= character.getInventorySize() + 1) {
+                        character.removeMonster(numberChoice-1);
+                        return;
+                    }
+                    std::cout << "Invalid input, you have to choose a monster from 1 to " << character.getInventorySize() + 1 << std::endl;
+                }
             }
         }
+        // Error handling
         else {
-            std::cout << "invalid input, try again" << std::endl;
+            std::cout << "invalid input, the input must be between 1 and " << possibilities << std::endl;
         }
     }
 }
@@ -182,9 +191,6 @@ void fightEnemy(Character& player) {
         }
         randomTurn = !randomTurn;
     }
-
-
-
     for (int i = 0; i < player.getInventory().size(); ++i) {
         if (!player.getInventory()[i].getStatus()) {
             std::cout << player.getChosenMonster().getStatus() << std::endl;

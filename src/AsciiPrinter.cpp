@@ -12,7 +12,7 @@ void AsciiPrinter::printFightScreen(const Monster& _friendlyMonster, const Monst
     friendlyMonster = _friendlyMonster;
     enemyMonster = _enemyMonster;
     std::string displayName;
-    if (monsterturn == 0) {
+    if (monsterturn == 0 || monsterturn == 2) {
         displayName = friendlyMonster.getName();
     } else if (monsterturn == 1) {
         displayName = enemyMonster.getName();
