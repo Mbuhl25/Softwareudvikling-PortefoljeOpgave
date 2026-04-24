@@ -11,6 +11,7 @@ add_executable(AniMon
     src/Character.cpp 
     src/Monster.cpp
     src/Item.cpp
+    src/CaveFactory.cpp
 )
 
 target_include_directories(AniMon PUBLIC include)

@@ -8,40 +8,12 @@
 #include "AsciiPrinter.h"
 #include "Monster.h"
 #include "Item.h"
+#include "CaveFactory.h"
 
-
-// Initialize an object for every monster
-Monster Worm       = Monster("Wiggly Worm",        5,    5, "../AsciiArt/Worm.txt");
-Monster Duckling   = Monster("Dizzy Duckling",     15,   5, "../AsciiArt/Duckling.txt");
-Monster Cockroach  = Monster("Creepy Cockroach",   10,  10, "../AsciiArt/Cockroach.txt");
-Monster Mouse      = Monster("Mighty Mouse",       10,  15, "../AsciiArt/Mouse.txt");
-Monster Fish       = Monster("Flipping Fish",      20,  10, "../AsciiArt/Fish.txt");
-Monster Spider     = Monster("Savage Spider",      15,  25, "../AsciiArt/Spider.txt");
-Monster Rabbit     = Monster("Raging Rabbit",      20,  15, "../AsciiArt/Rabbit.txt");
-Monster Frog       = Monster("Fierce Frog",        25,  15, "../AsciiArt/Frog.txt");
-Monster Bee        = Monster("Buzzing Bee",        10,  20, "../AsciiArt/Bee.txt");
-Monster Bat        = Monster("Benny Bat",          20,  15, "../AsciiArt/Bat.txt");
-Monster Squirrel   = Monster("Sneaky Squirrel",    25,  20, "../AsciiArt/Squirrel.txt");   
-Monster Penguin    = Monster("Punchy Penguin",     40,  25, "../AsciiArt/Penguin.txt");    
-Monster Cat        = Monster("Clever Cat",         30,  25, "../AsciiArt/Cat.txt");
-Monster Owl        = Monster("Observant Owl",      35,  30, "../AsciiArt/Owl.txt");
-Monster Deer       = Monster("Dashing Deer",      120,  30, "../AsciiArt/Deer.txt");
-Monster Porcupine  = Monster("Prickly Porcupine",  60,  35, "../AsciiArt/Porcupine.txt");
-Monster Cow        = Monster("oward Cow",         150,  35, "../AsciiArt/Cow.txt");
-Monster Horse      = Monster("Hardy Horse",       160,  40, "../AsciiArt/Horse.txt");
-Monster Elephant   = Monster("Enormous Elephant", 200,  50, "../AsciiArt/Elephant.txt");
-Monster Dragon     = Monster("Enormous Elephant", 200, 150, "../AsciiArt/Dragon.txt");
-
-// Make list that works for different categories (all, weak, strong)
-std::vector<Monster> allMonsters{Bat, Bee, Cat, Cockroach, Cow, 
-                                Deer, Duckling, Elephant, Fish,
-                                Frog, Horse, Mouse, Owl, Penguin,
-                                Porcupine, Rabbit, Spider, Squirrel, Dragon};
-std::vector<Monster> tier1Monsters{Worm, Duckling, Cockroach, Mouse, Fish};
-
+CaveFactory caveGenerator = CaveFactory();
 AsciiPrinter screen = AsciiPrinter();
 
-void chooseMonster(Character& character, std::vector<Monster>& monsterList, int possibilities) {
+void chooseMonster(Character& character, const std::vector<Monster>& monsterList, int possibilities) {
     // Generate a list of random monsters from the monsterList
     std::vector<Monster> possibilitiesMonsters;
     std::random_device rd;
@@ -99,17 +71,19 @@ int randomTurnHandler() {
         std::cin >> input;
         Character newplayer = Character(input);
         std::cout << "Choose two Starter Monsters for " << newplayer.getName() << std::endl;
-        chooseMonster(newplayer, tier1Monsters, 3);
-        chooseMonster(newplayer, tier1Monsters, 3);
+        chooseMonster(newplayer, caveGenerator.getMonsterList(1), 3);
+        chooseMonster(newplayer, caveGenerator.getMonsterList(1), 3);
         return newplayer;
     }
 
 void fightEnemy(Character& player) {
-    
+    /*
     Character enemy = Character("Cliff");
     std::cout << "Choose the monster of " << enemy.getName() << ", your opponent: " << std::endl;
-    chooseMonster(enemy, tier1Monsters, 3);
-    
+    chooseMonster(enemy, caveGenerator.getMonsterList(1), 3);
+    */
+    Character enemy = caveGenerator.createEnemy(5);
+    std::cout << enemy.getName() << std::endl;
 
     if (player.getInventory().size() == 0){ return; }
     std::cout << "Which of your Monsters should start the fight? " << std::endl;
