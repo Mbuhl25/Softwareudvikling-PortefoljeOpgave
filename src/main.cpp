@@ -105,9 +105,11 @@ int randomTurnHandler() {
     }
 
 void fightEnemy(Character& player) {
+    
     Character enemy = Character("Cliff");
     std::cout << "Choose the monster of " << enemy.getName() << ", your opponent: " << std::endl;
     chooseMonster(enemy, tier1Monsters, 3);
+    
 
     if (player.getInventory().size() == 0){ return; }
     std::cout << "Which of your Monsters should start the fight? " << std::endl;
@@ -136,11 +138,16 @@ void fightEnemy(Character& player) {
                         break;
                     }
                     else {
-                        std::cout << "You already have 4 monsters. Choose one to replace: " << std::endl;
-                        screen.printInventory(player.getInventory());
-                        std::cin >> numberChoice;
-                        player.removeMonster(numberChoice-1);
-                        break;
+                        while (true) {
+                            std::cout << "You already have " << player.getInventorySize() << " monsters. Choose one to replace: " << std::endl;
+                            screen.printInventory(player.getInventory());
+                            std::cin >> numberChoice;
+                            if (numberChoice >= 1 && numberChoice <= player.getInventorySize() + 1) {
+                                player.removeMonster(numberChoice-1);
+                                return;
+                            }
+                            std::cout << "Invalid input, you have to choose a monster from 1 to " << player.getInventorySize() + 1 << std::endl;
+                        }
                     }
                     enemy.removeMonster(0);
                     break;
@@ -152,12 +159,20 @@ void fightEnemy(Character& player) {
         // Logic if player monster dies
         } else if (player.getChosenMonster().getStatus() == "Fainted") {
             std::cout << "Your Monster just died" << std::endl;
+            /*
             for (int i = 0; i < player.getInventory().size(); ++i) {
                 if (player.getInventory()[i].getStatus() == "Fainted") {
                     player.removeMonster(i);
                 }
             }
-            if (player.getInventory().empty()) {
+            */
+            int aliveMonsters = 0;
+            for (int i = 0; i < player.getInventory().size(); ++i) {
+                if (player.getInventory()[i].getStatus() != "Fainted") {
+                    aliveMonsters += 1;
+                }
+            }
+            if (aliveMonsters == 0) {
                 std::cout << "You have lost all of you Monsters, and your character is dead\n" << std::endl;
                 break;
             }
@@ -205,7 +220,7 @@ int main() {
             std::cout << "Since you dont have a Character, you have to create one now" << std::endl;
             player = createCharacter();
         }
-
+        // main loop of the game
         std::cout << "What do you want to do?\n [1] Create a new character\n [2] Fight a monster\n [3] Check your inventory\n [4] exit the game" << std::endl;
         int numberChoice = 0;
         if (numberChoice < 1 || numberChoice > 4) {

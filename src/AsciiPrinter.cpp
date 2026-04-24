@@ -6,11 +6,9 @@
 
 AsciiPrinter::AsciiPrinter() {}
 
-void AsciiPrinter::printFightScreen(const Monster& _friendlyMonster, const Monster& _enemyMonster, const int monsterturn) {
+void AsciiPrinter::printFightScreen(const Monster& friendlyMonster, const Monster& enemyMonster, const int monsterturn) {
     int screenWidth = 71; // Greater than 50 and uneven
 
-    friendlyMonster = _friendlyMonster;
-    enemyMonster = _enemyMonster;
     std::string displayName;
     if (monsterturn == 0 || monsterturn == 2) {
         displayName = friendlyMonster.getName();
@@ -75,7 +73,7 @@ void AsciiPrinter::printInventory(const std::vector<Monster>& _monsters) const {
         std::cout << std::left << std::setw(3) << "|" << std::setw(screenWidth-3) << i+1;
     }
     std::cout << "|" << std::endl;
-    
+    // print asciiArt
     for (int line = 0; line < _monsters[0].getAppearance().size(); ++line){
         std::cout << std::left << std::setw(5) << "|";
         for (int i = 0; i < _monsters.size(); ++i){
@@ -84,6 +82,22 @@ void AsciiPrinter::printInventory(const std::vector<Monster>& _monsters) const {
         }
         std::cout << std::endl;
     }
+    std::cout << "+"; for (int i = 1; i < screenWidth*_monsters.size(); ++i) {std::cout << "=";}; std::cout << "+" << std::endl;
+    // print damage
+    for (int i = 0; i < _monsters.size(); ++i){
+        std::cout << std::left << std::setw(3) << "|" << std::setw(screenWidth-3) << "Damage: " + std::to_string(_monsters[i].getDamage());
+    }
+    std::cout << "|" << std::endl;
+    // print HP
+    for (int i = 0; i < _monsters.size(); ++i){
+        std::cout << std::left << std::setw(3) << "|" << std::setw(screenWidth-3) << "HP: " + std::to_string(_monsters[i].getHitPoints()) + " of " + std::to_string(_monsters[i].getMaxHitPoints());
+    }
+    std::cout << "|" << std::endl;
+    // print status
+    for (int i = 0; i < _monsters.size(); ++i){
+        std::cout << std::left << std::setw(3) << "|" << std::setw(screenWidth-3) << "Status: " + _monsters[i].getStatus();
+    }
+    std::cout << "|" << std::endl;
     std::cout << "+"; for (int i = 1; i < screenWidth*_monsters.size(); ++i) {std::cout << "=";}; std::cout << "+" << std::endl;
 }
 

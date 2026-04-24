@@ -1,5 +1,5 @@
-#include "Character.h"
 #include <iostream>
+#include "Character.h"
 
 Character::Character() {}
 

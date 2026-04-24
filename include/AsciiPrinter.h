@@ -15,7 +15,5 @@ class AsciiPrinter {
         void printInventory(const std::vector<const Monster*>&) const;
         ~AsciiPrinter();
     private:
-        Monster friendlyMonster;
-        Monster enemyMonster;
 };
 #endif
