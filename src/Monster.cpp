@@ -57,7 +57,7 @@ void Monster::setStatus(std::string _status) {
 int Monster::takeDamage(int damage) {
     hitPoints -= damage;
     if (hitPoints <= 0) {
-        status = "dead";
+        status = "Fainted";
     }
     return hitPoints;
 }

@@ -125,7 +125,7 @@ void fightEnemy(Character& player) {
 
     while (true) {
         // Logic if enemy monster dies
-        if (enemy.getChosenMonster().getStatus() == "dead") {
+        if (enemy.getChosenMonster().getStatus() == "Fainted") {
             randomTurn = 2;
             screen.printFightScreen(player.getChosenMonster(), enemy.getChosenMonster(), randomTurn);
             std::cin >> numberChoice;
@@ -150,10 +150,10 @@ void fightEnemy(Character& player) {
             }
             return;
         // Logic if player monster dies
-        } else if (player.getChosenMonster().getStatus() == "dead") {
+        } else if (player.getChosenMonster().getStatus() == "Fainted") {
             std::cout << "Your Monster just died" << std::endl;
             for (int i = 0; i < player.getInventory().size(); ++i) {
-                if (player.getInventory()[i].getStatus() == "dead") {
+                if (player.getInventory()[i].getStatus() == "Fainted") {
                     player.removeMonster(i);
                 }
             }

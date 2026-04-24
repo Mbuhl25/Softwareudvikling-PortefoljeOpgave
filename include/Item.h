@@ -2,22 +2,19 @@
 #define ITEM_H
 
 #include <string>
-#include "Monster.h"
+
+class Monster;
 
 class Item
 {
 public:
-    Item(std::string, std::string);
-    void setName(std::string);
+    Item(std::string);
     std::string getName();
-    std::string getStatus();
-
     void useItem(Monster&);
     ~Item();
 private:
     std::string name;
-    std::string status;
-    enum class ItemType {Bomb, FireBomb, Poison};
+    enum class ItemType {Bomb, FireBomb, ThunderBomb, Club, IceCubes, Curse, Poison};
     ItemType itemEnum;
 };
 
