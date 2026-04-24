@@ -10,6 +10,7 @@ add_executable(AniMon
     src/AsciiPrinter.cpp
     src/Character.cpp 
     src/Monster.cpp
+    src/Item.cpp
 )
 
 target_include_directories(AniMon PUBLIC include)
