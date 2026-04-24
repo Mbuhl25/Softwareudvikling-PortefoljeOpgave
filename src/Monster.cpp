@@ -9,7 +9,7 @@ Monster::Monster(std::string _name, int _hitPoints, int _damge, std::string asci
     hitPoints = _hitPoints;
     maxHitPoints = _hitPoints;
     damage = _damge;
-    alive = true;
+    status = "";
 
     std::ifstream asciiFile(asciiArtPath);
     if (asciiFile.fail()) {
@@ -42,25 +42,29 @@ const std::vector<std::string>& Monster::getAppearance() const {
     return appearance;
 }
 
-bool Monster::getStatus() const {
-    return alive;
+std::string Monster::getStatus() const {
+    return status;
 }
 
 void Monster::setName(std::string& _name) {
     name = _name;
 }
 
+void Monster::setStatus(std::string _status) {
+    status = _status;
+}
+
 int Monster::takeDamage(int damage) {
     hitPoints -= damage;
     if (hitPoints <= 0) {
-        alive = false;
+        status = "dead";
     }
     return hitPoints;
 }
 
 int Monster::revive() {
     hitPoints = maxHitPoints;
-    alive = true;
+    status = "";
     return hitPoints;
 }
 

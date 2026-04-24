@@ -7,6 +7,7 @@
 #include "Monster.h"
 #include "AsciiPrinter.h"
 #include "Monster.h"
+#include "Item.h"
 
 
 // Initialize an object for every monster
@@ -122,9 +123,9 @@ void fightEnemy(Character& player) {
 
     int randomTurn = randomTurnHandler();
 
-    bool fighting = true;
-    while (fighting) {
-        if (enemy.getChosenMonster().getStatus() == 0) {
+    while (true) {
+        // Logic if enemy monster dies
+        if (enemy.getChosenMonster().getStatus() == "dead") {
             randomTurn = 2;
             screen.printFightScreen(player.getChosenMonster(), enemy.getChosenMonster(), randomTurn);
             std::cin >> numberChoice;
@@ -147,11 +148,12 @@ void fightEnemy(Character& player) {
                     std::cout << "Going back to the main menu" << std::endl;
                     break;
             }
-            fighting = false;
-        } else if (player.getChosenMonster().getStatus() == 0) {
+            return;
+        // Logic if player monster dies
+        } else if (player.getChosenMonster().getStatus() == "dead") {
             std::cout << "Your Monster just died" << std::endl;
             for (int i = 0; i < player.getInventory().size(); ++i) {
-                if (player.getInventory()[i].getStatus() == 0) {
+                if (player.getInventory()[i].getStatus() == "dead") {
                     player.removeMonster(i);
                 }
             }
@@ -190,12 +192,6 @@ void fightEnemy(Character& player) {
             fighters[!randomTurn]->getChosenMonster().takeDamage(fighters[randomTurn]->getChosenMonster().getDamage());
         }
         randomTurn = !randomTurn;
-    }
-    for (int i = 0; i < player.getInventory().size(); ++i) {
-        if (!player.getInventory()[i].getStatus()) {
-            std::cout << player.getChosenMonster().getStatus() << std::endl;
-            player.removeMonster(i);
-        }
     }
 }
 

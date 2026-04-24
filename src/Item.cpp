@@ -1,4 +1,6 @@
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 #include "Item.h"
 
 
@@ -26,6 +28,10 @@ std::string Item::getStatus() {
 }
 
 void Item::useItem(Monster& enemyMonster) {
+    int percentage;
+	std::srand(std::time(0));		// set seed value to current time
+	percentage = rand() % 100 + 1;
+	std::cout << percentage << std::endl;
     switch (itemEnum)
     {
     case ItemType::Bomb:
@@ -34,6 +40,9 @@ void Item::useItem(Monster& enemyMonster) {
         break;
     case ItemType::FireBomb:
         std::cout << "FIREBOMB" << std::endl;
+        if (percentage <= 35) {
+            enemyMonster.setStatus("Stunned");
+        }
         enemyMonster.takeDamage(5);
         break;
     case ItemType::Poison:

@@ -16,9 +16,10 @@ class Monster {
         int getMaxHitPoints() const;
         int getDamage() const;
         const std::vector<std::string>& getAppearance() const;
-        bool getStatus() const;
+        std::string getStatus() const;
         // Modifiers
         void setName(std::string&);
+        void setStatus(std::string);
         int takeDamage(int);
         int revive();
         ~Monster();
@@ -28,6 +29,6 @@ class Monster {
         int maxHitPoints;
         int damage;
         std::vector<std::string> appearance;
-        bool alive;
+        std::string status;
 };
 #endif
