@@ -47,6 +47,13 @@ void AsciiPrinter::printFightScreen(const Monster& friendlyMonster, const Monste
         << std::setw((screenWidth-20-20-5-5)/2)<< ""
         << std::setw(10) << "Strength: " << std::setw(10) << enemyMonster.getDamage()
         << std::right << "|" << std::endl;
+    std::cout << std::left << std::setw(5) << "|"
+        << std::setw(10) << "status: " << std::setw(10) << friendlyMonster.getStatus()
+        << std::setw((screenWidth-20-20-5-5)/2)<< ""
+        << std::setw(6)<< " "
+        << std::setw((screenWidth-20-20-5-5)/2)<< ""
+        << std::setw(10) << "status: " << std::setw(10) << enemyMonster.getStatus()
+        << std::right << "|" << std::endl;
     
     
     std::cout << "+"; for (int i = 1; i < screenWidth; ++i) {std::cout << "=";}; std::cout << "+" << std::endl;
@@ -54,6 +61,7 @@ void AsciiPrinter::printFightScreen(const Monster& friendlyMonster, const Monste
         std::cout << "|" << std::left << std::setw(screenWidth-1) << "  What would you like to do?" << "|" << std::right << std::endl;
         std::cout << "|" << std::left << std::setw(screenWidth-1) << "    [1] Attack" << "|" << std::right << std::endl;
         std::cout << "|" << std::left << std::setw(screenWidth-1) << "    [2] Switch Monster" << "|" << std::right << std::endl;
+        std::cout << "|" << std::left << std::setw(screenWidth-1) << "    [3] Use an Item from the Monster" << "|" << std::right << std::endl;
     } else if (monsterturn == 1) {
         std::cout << "|" << std::left << std::setw(screenWidth-1) << "  " + displayName + " Chooses to attack" << "|" << std::right << std::endl;
     } else if (monsterturn == 2) {
