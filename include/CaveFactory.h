@@ -12,11 +12,13 @@ public:
     const int EstimatePlayerLevel(const Character&) const;
     Monster findMatchingPowerLevel(int);
     Character createEnemy(int);
+    Item clearReward();
     ~CaveFactory();
 private:
     std::vector<Monster> allMonsters;
     std::vector<Monster> tier1Monsters;
     std::vector<Monster> tier2Monsters;
+    std::vector<Item> allItems;
 };
 
 #endif

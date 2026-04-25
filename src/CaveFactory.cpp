@@ -44,6 +44,16 @@ CaveFactory::CaveFactory() {
     tier2Monsters = {
     Monster("Devious Dragon",     100, 100, "../AsciiArt/Dragon.txt"),
     };
+
+    allItems = {
+        Item("Bomb"),
+        Item("FireBomb"),
+        Item("ThunderBomb"),
+        Item("Club"),
+        Item("IceCubes"),
+        Item("Curse"),
+        Item("Poison"),
+    };
 }
 
 const std::vector<Monster>& CaveFactory::getMonsterList(int tier) const {
@@ -102,6 +112,12 @@ Character CaveFactory::createEnemy(int characterLevel) {
     }
 
     return enemy;
+}
+
+Item CaveFactory::clearReward() {
+    int randomIndex;
+    randomIndex = rand() % allItems.size();
+    return allItems[randomIndex];
 }
 
 CaveFactory::~CaveFactory() {}
