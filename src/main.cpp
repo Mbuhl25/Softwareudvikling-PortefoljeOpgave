@@ -168,6 +168,20 @@ void fightEnemy(Character& player) {
                         std::cin >> numberChoice;
                     } while (!player.setChosenMonster(numberChoice));
                     break;
+                case 3:
+                    if (player.getChosenMonster().getItemList().empty()) {
+                        std::cout << "You don't have any items, so your monster attacks instead" << std::endl;
+                        fighters[!randomTurn]->getChosenMonster().takeDamage(fighters[randomTurn]->getChosenMonster().getDamage());
+                        break;
+                    }
+                    std::cout << "Choose an item to use:" << std::endl;
+                    for (int i = 0; i < player.getChosenMonster().getItemList().size(); ++i) {
+                        std::cout << "[" << i+1 << "]   " << player.getChosenMonster().getItemList()[i].getName() << std::endl;
+                    }
+                    do {
+                        std::cin >> numberChoice;
+                    } while (numberChoice >= 1 && numberChoice <= player.getChosenMonster().getItemList().size());
+                    player.getChosenMonster().getItemList()[numberChoice].useItem(enemy.getChosenMonster());
             }
         } else if (randomTurn == 1) {
             screen.printFightScreen(player.getChosenMonster(), enemy.getChosenMonster(), randomTurn);
@@ -181,6 +195,19 @@ void fightEnemy(Character& player) {
         if (player.getChosenMonster().getStatus() == "Fainted") {
             player.getChosenMonster().revive();
         }
+    }
+    Item itemReward = caveGenerator.clearReward();
+    std::cout << "\nAt the end of the cave you found the Item: " << itemReward.getName() << "." << std::endl;
+    std::cout << "You can now give it to one of you Monsters: " << std::endl;
+    screen.printInventory(player.getInventory());
+    while (true) {
+        std::cin >> numberChoice;
+        if (numberChoice >= 1 && numberChoice <= player.getInventorySize() + 1) {
+            player.setChosenMonster(numberChoice);
+            player.getChosenMonster().addItem(itemReward);
+            break;
+        }
+        std::cout << "Invalid input, you have to choose a monster from 1 to " << player.getInventorySize() + 1 << std::endl;
     }
 }
 

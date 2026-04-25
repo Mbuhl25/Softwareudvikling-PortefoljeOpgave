@@ -92,9 +92,8 @@ void Item::useItem(Monster& enemyMonster) {
                 enemyMonster.setStatus("Poisoned");
             }
         }
-
         enemyMonster.takeDamage(10);
-        break;
+        break;     
 
     default:
         std::cout << "NOTHING" << std::endl;

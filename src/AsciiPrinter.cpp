@@ -98,6 +98,17 @@ void AsciiPrinter::printInventory(const std::vector<Monster>& _monsters) const {
         std::cout << std::left << std::setw(3) << "|" << std::setw(screenWidth-3) << "Status: " + _monsters[i].getStatus();
     }
     std::cout << "|" << std::endl;
+
+    // print Items
+    for (int i = 0; i < _monsters.size(); ++i){
+        std::string itemStrings;
+        for (int j = 0; j < _monsters[i].getItemList().size(); ++j) {
+            itemStrings += _monsters[i].getItemList()[j].getName() + ", ";
+        }
+        std::cout << std::left << std::setw(3) << "|" << std::setw(screenWidth-3) << "Item: " + itemStrings;
+    }
+
+    std::cout << "|" << std::endl;
     std::cout << "+"; for (int i = 1; i < screenWidth*_monsters.size(); ++i) {std::cout << "=";}; std::cout << "+" << std::endl;
 }
 
