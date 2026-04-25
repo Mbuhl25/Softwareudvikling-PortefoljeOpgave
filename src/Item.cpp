@@ -28,7 +28,7 @@ Item::Item(std::string _name) {
     }
 }
 
-std::string Item::getName() {
+const std::string Item::getName() {
     return name;
 }
 
@@ -68,6 +68,11 @@ void Item::useItem(Monster& enemyMonster) {
         std::cout << "using IceCubes" << std::endl;
         if (percentage <= 80) {
             enemyMonster.setStatus("Frozen");
+            if (percentage <= 40) {
+                enemyMonster.setFrozenTimes(2);
+            } else {
+                enemyMonster.setFrozenTimes(1);
+            }
         }
         break;
 

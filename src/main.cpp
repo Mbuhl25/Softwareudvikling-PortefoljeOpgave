@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 #include <random>
+#include <cstdlib>
+#include <ctime>
 #include "Character.h"
 #include "Monster.h"
 #include "AsciiPrinter.h"
@@ -76,7 +78,7 @@ int randomTurnHandler() {
         return newplayer;
     }
 
-void fightEnemy(Character& player) {
+bool fightEnemy(Character& player) {
     Character enemy = caveGenerator.createEnemy(caveGenerator.EstimatePlayerLevel(player));
     std::cout << "You are now entering a cave, and here waits an opponent, " << enemy.getName()
     << ", Your opponent wishes to kill you,\nbe ready to fight her and her monsters to the death!\n" << std::endl;
@@ -140,7 +142,7 @@ void fightEnemy(Character& player) {
             }
             if (aliveMonsters == 0) {
                 std::cout << "You have lost all of you Monsters, and your character is dead\n" << std::endl;
-                break;
+                return false;
             }
             std::cout << "Which of your Monsters should be swapped into the fight " << std::endl;
             screen.printInventory(player.getInventory());
@@ -183,8 +185,36 @@ void fightEnemy(Character& player) {
                     player.getChosenMonster().getItemList()[numberChoice-1].useItem(enemy.getChosenMonster());
             }
         } else if (randomTurn == 1) {
+            int percentage;
+            percentage = rand() % 100 + 1;
+
+            // Apply status effects
+            if (enemy.getChosenMonster().getStatus() == "Stunned") {
+                enemy.getChosenMonster().setStatus("");
+                continue;
+            }
+            if (enemy.getChosenMonster().getStatus() == "Paralyzed") {
+                if (percentage <= 30) {
+                    continue;
+                }
+            }
+            if (enemy.getChosenMonster().getStatus() == "Frozen") {
+                if (enemy.getChosenMonster().getFrozenTimes() < 0) {
+                    enemy.getChosenMonster().setFrozenTimes(enemy.getChosenMonster().getFrozenTimes() - 1);
+                    continue;
+                } else {
+                    enemy.getChosenMonster().setStatus("");
+                }
+            }
             screen.printFightScreen(player.getChosenMonster(), enemy.getChosenMonster(), randomTurn);
             fighters[!randomTurn]->getChosenMonster().takeDamage(fighters[randomTurn]->getChosenMonster().getDamage());
+            // Apply status effects
+            if (enemy.getChosenMonster().getStatus() == "Curse") {
+                enemy.getChosenMonster().takeDamage(5);
+            }
+            if (enemy.getChosenMonster().getStatus() == "Poisoned") {
+                enemy.getChosenMonster().takeDamage(5);
+            }
         }
         randomTurn = !randomTurn;
     }
@@ -208,9 +238,11 @@ void fightEnemy(Character& player) {
             player.getChosenMonster().revive();
         }
     }
+    return true;
 }
 
 int main() {
+    std::srand(std::time(0));
     // Start of logic for the game
     std::cout << "---=== Animon - Not a rip-off of Pokimon ===--- " << std::endl;
     Character player = Character("");
@@ -233,7 +265,9 @@ int main() {
                 break;
             case 2:
                 std::cout << "Switching to fight\n" << std::endl;
-                fightEnemy(player);
+                if (!fightEnemy(player)) {
+                    player = createCharacter();
+                }
                 break;
             case 3:
                 std::cout << "Checking inventory\n" << std::endl;
