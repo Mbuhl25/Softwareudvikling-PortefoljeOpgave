@@ -1,6 +1,6 @@
-#include "Monster.h"
 #include <fstream>
 #include <iostream>
+#include "Monster.h"
 
 Monster::Monster() {}
 
@@ -46,6 +46,10 @@ std::string Monster::getStatus() const {
     return status;
 }
 
+std::vector<Item> Monster::getItemList() const {
+    return itemList;
+}
+
 void Monster::setName(std::string& _name) {
     name = _name;
 }
@@ -66,6 +70,10 @@ int Monster::revive() {
     hitPoints = maxHitPoints;
     status = "";
     return hitPoints;
+}
+
+void Monster::addItem(Item item) {
+    itemList.push_back(item);
 }
 
 Monster::~Monster() {}

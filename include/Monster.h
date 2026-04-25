@@ -4,6 +4,7 @@
 
 #include <string>
 #include <vector>
+#include "Item.h"
 
 class Monster {
     public:
@@ -17,11 +18,13 @@ class Monster {
         int getDamage() const;
         const std::vector<std::string>& getAppearance() const;
         std::string getStatus() const;
+        std::vector<Item> getItemList() const;
         // Modifiers
         void setName(std::string&);
         void setStatus(std::string);
         int takeDamage(int);
         int revive();
+        void addItem(Item);
         ~Monster();
     private:
         std::string name;
@@ -30,5 +33,7 @@ class Monster {
         int damage;
         std::vector<std::string> appearance;
         std::string status;
+
+        std::vector<Item> itemList;
 };
 #endif
