@@ -9,7 +9,7 @@ class Item
 {
 public:
     Item(std::string);
-    std::string getName();
+    const std::string getName();
     void useItem(Monster&);
     ~Item();
 private:

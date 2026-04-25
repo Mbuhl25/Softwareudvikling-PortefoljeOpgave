@@ -10,6 +10,7 @@ Monster::Monster(std::string _name, int _hitPoints, int _damge, std::string asci
     maxHitPoints = _hitPoints;
     damage = _damge;
     status = "";
+    frozenTimes = 0;
 
     std::ifstream asciiFile(asciiArtPath);
     if (asciiFile.fail()) {
@@ -50,6 +51,10 @@ std::vector<Item> Monster::getItemList() const {
     return itemList;
 }
 
+int Monster::getFrozenTimes() const {
+    return frozenTimes;
+}
+
 void Monster::setName(std::string& _name) {
     name = _name;
 }
@@ -74,6 +79,10 @@ int Monster::revive() {
 
 void Monster::addItem(Item item) {
     itemList.push_back(item);
+}
+
+void Monster::setFrozenTimes(int amount) {
+    frozenTimes = amount;
 }
 
 Monster::~Monster() {}
