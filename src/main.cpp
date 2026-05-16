@@ -64,7 +64,7 @@ void chooseMonster(Character& character, const std::vector<Monster>& monsterList
                 std::cout << "You already have " << character.getInventory().size() << " monsters. Choose one to replace: " << std::endl;
                 screen.printInventory(character.getInventory());
                 numberChoice = getNumberInput(1, character.getInventory().size() + 1);
-                character.removeMonster(numberChoice-1);
+                character.removeMonster(numberChoice);
                 return;
             }
         }
@@ -118,24 +118,20 @@ bool fightEnemy(Character& player) {
                 case 1:
                     // enemy.getChosenMonster().revive();
                     if (player.addMonster(enemy.getChosenMonster())) {
-                        enemy.removeMonster(0);
+                        enemy.removeMonster(1);
                         enemy.setChosenMonster(1);
                     }
                     else {
-                        while (true) {
-                            std::cout << "You already have " << player.getInventory().size() << " monsters. Choose one to replace: " << std::endl;
-                            screen.printInventory(player.getInventory());
-                            numberChoice = getNumberInput(1, player.getInventory().size() + 1);
-                            player.removeMonster(numberChoice-1);
-                            break;
-                            std::cout << "Invalid input, you have to choose a monster from 1 to " << player.getInventory().size() + 1 << std::endl;
-                        }
-                        enemy.removeMonster(0);
+                        std::cout << "You already have " << player.getInventory().size() << " monsters. Choose one to replace: " << std::endl;
+                        screen.printInventory(player.getInventory());
+                        numberChoice = getNumberInput(1, player.getInventory().size() + 1);
+                        player.removeMonster(numberChoice);
+                        enemy.removeMonster(1);
                         enemy.setChosenMonster(1);
                     }
                     break;
                 case 2:
-                    enemy.removeMonster(0);
+                    enemy.removeMonster(1);
                     if (enemy.getInventory().size() > 1) {
                         enemy.setChosenMonster(1);
                     }

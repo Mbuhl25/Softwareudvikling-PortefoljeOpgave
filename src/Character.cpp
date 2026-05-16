@@ -46,7 +46,10 @@ bool Character::addMonster(const Monster& _monster) {
 }
 
 void Character::removeMonster(int index) {
-    inventory.erase(inventory.begin() + index);
+    inventory.erase(inventory.begin() + index - 1);
+    if (index - 1 < activeMonster) {
+        activeMonster--;
+    }
 }
 
 void Character::setName(const std::string& _name) {
