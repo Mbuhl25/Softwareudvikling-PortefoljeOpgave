@@ -15,6 +15,25 @@
 CaveFactory caveGenerator = CaveFactory();
 AsciiPrinter screen = AsciiPrinter();
 
+int getNumberInput(int lowerBound, int upperBound) {
+    int numberChoice;
+
+    while (true) {
+        std::cin >> numberChoice;
+        if (!std::cin) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "invalid input, pls enter a number" << std::endl;
+            continue;
+        }
+        if (numberChoice >= lowerBound && numberChoice <= upperBound) {
+            return numberChoice;
+        }
+        std::cout << "invalid input, pls enter a number between " << lowerBound << " and " << upperBound << std::endl;
+        continue;
+    }
+}
+
 void chooseMonster(Character& character, const std::vector<Monster>& monsterList, int possibilities) {
     // Generate a list of random monsters from the monsterList
     std::vector<Monster> possibilitiesMonsters;
@@ -26,6 +45,7 @@ void chooseMonster(Character& character, const std::vector<Monster>& monsterList
         possibilitiesMonsters.push_back(monsterList[randomMonsterNumber(randomGenerator)]);
     }
 
+    int numberChoice;
     while (true) {
         // If only one option is given, no choices are required, and the one monster is added to the inventory.
         if (possibilities == 1) {
@@ -33,29 +53,20 @@ void chooseMonster(Character& character, const std::vector<Monster>& monsterList
             break;
         }
         screen.printInventory(possibilitiesMonsters);
-        int numberChoice;
-        std::cin >> numberChoice;
-        // Check for valid input
-        if (numberChoice >= 1 && numberChoice <= possibilities) {
-            if (character.addMonster(possibilitiesMonsters[numberChoice-1])) {
+        numberChoice = getNumberInput(1, possibilities); 
+
+        
+        if (character.addMonster(possibilitiesMonsters[numberChoice-1])) {
+            return;
+        }
+        else {
+            while (true) {
+                std::cout << "You already have " << character.getInventory().size() << " monsters. Choose one to replace: " << std::endl;
+                screen.printInventory(character.getInventory());
+                numberChoice = getNumberInput(1, character.getInventory().size() + 1);
+                character.removeMonster(numberChoice-1);
                 return;
             }
-            else {
-                while (true) {
-                    std::cout << "You already have " << character.getInventorySize() << " monsters. Choose one to replace: " << std::endl;
-                    screen.printInventory(character.getInventory());
-                    std::cin >> numberChoice;
-                    if (numberChoice >= 1 && numberChoice <= character.getInventorySize() + 1) {
-                        character.removeMonster(numberChoice-1);
-                        return;
-                    }
-                    std::cout << "Invalid input, you have to choose a monster from 1 to " << character.getInventorySize() + 1 << std::endl;
-                }
-            }
-        }
-        // Error handling
-        else {
-            std::cout << "invalid input, the input must be between 1 and " << possibilities << std::endl;
         }
     }
 }
@@ -69,9 +80,10 @@ int randomTurnHandler() {
 
     Character createCharacter() {
         std::cout << "Input the name of your new character: ";
-        std::string input;
-        std::cin >> input;
-        Character newplayer = Character(input);
+        std::string name;
+        std::cin.ignore();
+        std::getline(std::cin, name);
+        Character newplayer = Character(name);
         std::cout << "Choose two Starter Monsters for " << newplayer.getName() << std::endl;
         chooseMonster(newplayer, caveGenerator.getMonsterList(1), 3);
         chooseMonster(newplayer, caveGenerator.getMonsterList(2), 3);
@@ -90,7 +102,7 @@ bool fightEnemy(Character& player) {
     // a loop to make sure, a correct input is given
     int numberChoice;
     do {
-        std::cin >> numberChoice;
+        numberChoice = getNumberInput(1, player.getInventory().size());
     } while (!player.setChosenMonster(numberChoice));
 
     std::vector<Character*> fighters = {&player, &enemy};
@@ -101,7 +113,7 @@ bool fightEnemy(Character& player) {
         if (enemy.getChosenMonster().getStatus() == "Fainted") {
             randomTurn = 2;
             screen.printFightScreen(player.getChosenMonster(), enemy.getChosenMonster(), randomTurn);
-            std::cin >> numberChoice;
+            numberChoice = getNumberInput(1, 2);
             switch (numberChoice){
                 case 1:
                     // enemy.getChosenMonster().revive();
@@ -111,14 +123,12 @@ bool fightEnemy(Character& player) {
                     }
                     else {
                         while (true) {
-                            std::cout << "You already have " << player.getInventorySize() << " monsters. Choose one to replace: " << std::endl;
+                            std::cout << "You already have " << player.getInventory().size() << " monsters. Choose one to replace: " << std::endl;
                             screen.printInventory(player.getInventory());
-                            std::cin >> numberChoice;
-                            if (numberChoice >= 1 && numberChoice <= player.getInventorySize() + 1) {
-                                player.removeMonster(numberChoice-1);
-                                break;
-                            }
-                            std::cout << "Invalid input, you have to choose a monster from 1 to " << player.getInventorySize() + 1 << std::endl;
+                            numberChoice = getNumberInput(1, player.getInventory().size() + 1);
+                            player.removeMonster(numberChoice-1);
+                            break;
+                            std::cout << "Invalid input, you have to choose a monster from 1 to " << player.getInventory().size() + 1 << std::endl;
                         }
                         enemy.removeMonster(0);
                         enemy.setChosenMonster(1);
@@ -147,15 +157,12 @@ bool fightEnemy(Character& player) {
             std::cout << "Which of your Monsters should be swapped into the fight " << std::endl;
             screen.printInventory(player.getInventory());
             // a loop to make sure, a correct input is given
-            int numberChoice;
-            do {
-                std::cin >> numberChoice;
-            } while (!player.setChosenMonster(numberChoice));
+            player.setChosenMonster(getNumberInput(1, player.getInventory().size()));
         }
         
         else if (randomTurn == 0) {
             screen.printFightScreen(player.getChosenMonster(), enemy.getChosenMonster(), randomTurn);
-            std::cin >> numberChoice;
+            numberChoice = getNumberInput(1, 3);
             switch (numberChoice){
                 case 1:
                     fighters[!randomTurn]->getChosenMonster().takeDamage(fighters[randomTurn]->getChosenMonster().getDamage());
@@ -164,10 +171,7 @@ bool fightEnemy(Character& player) {
                     std::cout << "Which of your Monsters should be swapped into the fight " << std::endl;
                     screen.printInventory(player.getInventory());
                     // a loop to make sure, a correct input is given
-                    int numberChoice;
-                    do {
-                        std::cin >> numberChoice;
-                    } while (!player.setChosenMonster(numberChoice));
+                    player.setChosenMonster(getNumberInput(1, player.getInventory().size()));
                     break;
                 case 3:
                     if (player.getChosenMonster().getItemList().empty()) {
@@ -179,9 +183,7 @@ bool fightEnemy(Character& player) {
                     for (int i = 0; i < player.getChosenMonster().getItemList().size(); ++i) {
                         std::cout << "[" << i+1 << "]   " << player.getChosenMonster().getItemList()[i].getName() << std::endl;
                     }
-                    do {
-                        std::cin >> numberChoice;
-                    } while (numberChoice < 1 && numberChoice > player.getChosenMonster().getItemList().size());
+                    numberChoice = getNumberInput(1, player.getChosenMonster().getItemList().size());
                     player.getChosenMonster().getItemList()[numberChoice-1].useItem(enemy.getChosenMonster());
             }
         } else if (randomTurn == 1) {
@@ -222,15 +224,9 @@ bool fightEnemy(Character& player) {
     std::cout << "\nAt the end of the cave you found the Item: " << itemReward.getName() << "." << std::endl;
     std::cout << "You can now give it to one of you Monsters: " << std::endl;
     screen.printInventory(player.getInventory());
-    while (true) {
-        std::cin >> numberChoice;
-        if (numberChoice >= 1 && numberChoice <= player.getInventorySize() + 1) {
-            player.setChosenMonster(numberChoice);
-            player.getChosenMonster().addItem(itemReward);
-            break;
-        }
-        std::cout << "Invalid input, you have to choose a monster from 1 to " << player.getInventorySize() + 1 << std::endl;
-    }
+    numberChoice = getNumberInput(1, player.getInventory().size() + 1);
+    player.setChosenMonster(numberChoice);
+    player.getChosenMonster().addItem(itemReward);
     // revive fainted monsters
     for (int i = 0; i < player.getInventory().size()+1; ++i) {
         player.setChosenMonster(i);
@@ -254,10 +250,7 @@ int main() {
         }
         // main loop of the game
         std::cout << "What do you want to do?\n [1] Create a new character\n [2] Fight a monster\n [3] Check your inventory\n [4] exit the game" << std::endl;
-        int numberChoice = 0;
-        if (numberChoice < 1 || numberChoice > 4) {
-            std::cin >> numberChoice;
-        }
+        int numberChoice = getNumberInput(1, 4);
         switch (numberChoice) {
             case 1:
                 std::cout << "Switching to create character\n" << std::endl;
