@@ -28,7 +28,7 @@ CaveFactory::CaveFactory() {
     Monster("Confused Cow",       100, 20, "../AsciiArt/Cow.txt"),
     Monster("Hardy Horse",        90,  40, "../AsciiArt/Horse.txt"),
     Monster("Enormous Elephant",  100, 50, "../AsciiArt/Elephant.txt"),
-    Monster("Devious Dragon",     100, 100, "../AsciiArt/Dragon.txt"),
+    //Monster("Devious Dragon",     100, 100, "../AsciiArt/Dragon.txt"),
     };
 
     tier1Monsters = {
@@ -40,7 +40,7 @@ CaveFactory::CaveFactory() {
     Monster("Flipping Fish",      25,  10, "../AsciiArt/Fish.txt"),
     Monster("Fierce Frog",        25,  15, "../AsciiArt/Frog.txt"),
     };
-
+    // Giving mystelf the dragon for debugging and quick testing
     tier2Monsters = {
     Monster("Devious Dragon",     100, 100, "../AsciiArt/Dragon.txt"),
     };

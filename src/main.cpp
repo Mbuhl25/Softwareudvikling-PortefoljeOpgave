@@ -86,7 +86,7 @@ int randomTurnHandler() {
         Character newplayer = Character(name);
         std::cout << "Choose two Starter Monsters for " << newplayer.getName() << std::endl;
         chooseMonster(newplayer, caveGenerator.getMonsterList(1), 3);
-        chooseMonster(newplayer, caveGenerator.getMonsterList(2), 3);
+        chooseMonster(newplayer, caveGenerator.getMonsterList(1), 3);
         return newplayer;
     }
 
