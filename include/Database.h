@@ -6,6 +6,7 @@ class database
 {
 public:
     database();
+    int querything();
     ~database();
 private:
     

@@ -11,6 +11,7 @@
 #include "Monster.h"
 #include "Item.h"
 #include "CaveFactory.h"
+#include "Database.h"
 
 CaveFactory caveGenerator = CaveFactory();
 AsciiPrinter screen = AsciiPrinter();
@@ -237,6 +238,8 @@ bool fightEnemy(Character& player) {
 }
 
 int main() {
+    database db;
+    db.querything();
     std::srand(std::time(0));
     // Start of logic for the game
     std::cout << "---=== Animon - Not a rip-off of Pokimon ===--- " << std::endl;
