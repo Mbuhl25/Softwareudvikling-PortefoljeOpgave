@@ -15,6 +15,7 @@
 
 CaveFactory caveGenerator = CaveFactory();
 AsciiPrinter screen = AsciiPrinter();
+database db = database();
 
 int getNumberInput(int lowerBound, int upperBound) {
     int numberChoice;
@@ -82,17 +83,16 @@ int randomTurnHandler() {
     return fiftyFiftyChance(randomGenerator);
 }
 
-    Character createCharacter() {
-        std::cout << "Input the name of your new character: ";
-        std::string name;
-        std::cin.ignore();
-        std::getline(std::cin, name);
-        Character newplayer = Character(name);
-        std::cout << "Choose two Starter Monsters for " << newplayer.getName() << std::endl;
-        chooseMonster(newplayer, caveGenerator.getMonsterList(1), 3);
-        chooseMonster(newplayer, caveGenerator.getMonsterList(1), 3);
-        return newplayer;
-    }
+Character createCharacter() {
+    std::cout << "Input the name of your new character: ";
+    std::string name;
+    std::getline(std::cin, name);
+    Character newplayer = Character(name);
+    std::cout << "Choose two Starter Monsters for " << newplayer.getName() << std::endl;
+    chooseMonster(newplayer, caveGenerator.getMonsterList(1), 3);
+    chooseMonster(newplayer, caveGenerator.getMonsterList(1), 3);
+    return newplayer;
+}
 
 bool fightEnemy(Character& player) {
     Character enemy = caveGenerator.createEnemy(caveGenerator.EstimatePlayerLevel(player));
@@ -105,9 +105,7 @@ bool fightEnemy(Character& player) {
 
     // a loop to make sure, a correct input is given
     int numberChoice;
-    do {
-        numberChoice = getNumberInput(1, player.getInventory().size());
-    } while (!player.setChosenMonster(numberChoice));
+    player.setChosenMonster(getNumberInput(1, player.getInventory().size()));
 
     std::vector<Character*> fighters = {&player, &enemy};
 
@@ -156,7 +154,6 @@ bool fightEnemy(Character& player) {
             }
             std::cout << "Which of your Monsters should be swapped into the fight " << std::endl;
             screen.printInventory(player.getInventory());
-            // a loop to make sure, a correct input is given
             player.setChosenMonster(getNumberInput(1, player.getInventory().size()));
         }
         
@@ -227,8 +224,9 @@ bool fightEnemy(Character& player) {
     numberChoice = getNumberInput(1, player.getInventory().size());
     player.setChosenMonster(numberChoice);
     player.getChosenMonster().addItem(itemReward);
+
     // revive fainted monsters
-    for (int i = 0; i < player.getInventory().size()+1; ++i) {
+    for (int i = 1; i < player.getInventory().size()+1; ++i) {
         player.setChosenMonster(i);
         if (player.getChosenMonster().getStatus() == "Fainted") {
             player.getChosenMonster().revive();
@@ -241,12 +239,25 @@ bool fightEnemy(Character& player) {
 }
 
 int main() {
-    database db;
-    db.querything();
     std::srand(std::time(0));
     // Start of logic for the game
     std::cout << "---=== Animon - Not a rip-off of Pokimon ===--- " << std::endl;
     Character player = Character("");
+    std::cout << "What do you want to do?\n [1] Create a new character\n [2] Load a character from the database" << std::endl;
+    int numberChoice = getNumberInput(1, 2);
+    switch (numberChoice)
+    {
+    case 1:
+        player = createCharacter();
+        break;
+    case 2:
+        std::cout << "\nChoose one of the characters from the database:" << std::endl;
+        std::cout << "[0] Make a new Character" << std::endl;
+        db.displayCharacters();
+        numberChoice = getNumberInput(0,db.getSavedCharactersAmount());
+        player = db.loadCharacter(numberChoice);
+        break;
+    }
     while (true) {
         std::cout << "This is the main menu" << std::endl;
         if (player.getInventory().empty()) {
@@ -254,9 +265,17 @@ int main() {
             player = createCharacter();
         }
         // main loop of the game
-        std::cout << "What do you want to do?\n [1] Create a new character\n [2] Fight a monster\n [3] Check your inventory\n [4] exit the game" << std::endl;
-        int numberChoice = getNumberInput(1, 4);
+        std::cout << "What do you want to do?\n [0] Load a previous character\n [1] Create a new character\n [2] Fight a monster\n [3] Check your inventory\n [4] exit the game" << std::endl;
+        int numberChoice = getNumberInput(0, 4);
         switch (numberChoice) {
+            case 0:
+                std::cout << "current name: " << player.getName() << std::endl;
+                std::cout << "Switching to load character\n" << std::endl;
+                db.displayCharacters();
+                std::cout << db.getSavedCharactersAmount();
+                numberChoice = getNumberInput(0,db.getSavedCharactersAmount());
+                player = db.loadCharacter(numberChoice);
+                break;
             case 1:
                 std::cout << "Switching to create character\n" << std::endl;
                 player = createCharacter();
