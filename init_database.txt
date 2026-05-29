@@ -1,0 +1,101 @@
+CREATE TABLE item (
+	item_id	INTEGER NOT NULL,
+  item_name	TEXT NOT NULL,
+  PRIMARY KEY (item_id),
+  UNIQUE (item_name)
+);
+
+INSERT INTO item (item_name)
+ VALUES ('Bomb'), ('FireBomb'), ('ThunderBomb'), ('Club'), ('IceCubes'), ('Curse'), ('Poison');
+
+
+CREATE TABLE monster (
+	monster_id	INTEGER NOT NULL,
+	monster_name	TEXT NOT NULL,
+	monster_maxhp	INTEGER NOT NULL,
+	monster_damage	INTEGER NOT NULL,
+  monster_ascii	TEXT NOT NULL,
+  PRIMARY KEY (monster_id),
+  UNIQUE (monster_name, monster_ascii)
+);
+
+INSERT INTO monster (monster_name, monster_maxhp, monster_damage, monster_ascii)
+ VALUES ('Wiggly Worm',        5,    5, '../AsciiArt/Worm.txt'),
+  ('Dizzy Duckling',     10,   5, '../AsciiArt/Duckling.txt'),
+  ('Creepy Cockroach',   10,  10, '../AsciiArt/Cockroach.txt'),
+  ('Mighty Mouse',       10,  15, '../AsciiArt/Mouse.txt'),
+  ('Buzzing Bee',        10,  20, '../AsciiArt/Bee.txt'),
+  ('Flipping Fish',      25,  10, '../AsciiArt/Fish.txt'),
+  ('Fierce Frog',        25,  15, '../AsciiArt/Frog.txt'),
+  ('Bad Bat',            20,  25, '../AsciiArt/Bat.txt'),
+  ('Raging Rabbit',      35,  15, '../AsciiArt/Rabbit.txt'),
+  ('Savage Spider',      5,   50, '../AsciiArt/Spider.txt'),
+  ('Sneaky Squirrel',    30,  30, '../AsciiArt/Squirrel.txt'),
+  ('Punchy Penguin',     40,  25, '../AsciiArt/Penguin.txt'),
+  ('Observant Owl',      40,  30, '../AsciiArt/Owl.txt'),
+  ('Clever Cat',         45,  40, '../AsciiArt/Cat.txt'),
+  ('Prickly Porcupine',  65,  30, '../AsciiArt/Porcupine.txt'),
+  ('Dashing Deer',       75,  30, '../AsciiArt/Deer.txt'),
+  ('Confused Cow',       100, 20, '../AsciiArt/Cow.txt'),
+  ('Hardy Horse',        90,  40, '../AsciiArt/Horse.txt'),
+  ('Enormous Elephant',  100, 50, '../AsciiArt/Elephant.txt'),
+  ('Devious Dragon',     100, 100, '../AsciiArt/Dragon.txt');
+
+
+CREATE TABLE character (
+	character_id	INTEGER NOT NULL,
+	character_name	TEXT NOT NULL,
+  PRIMARY KEY (character_id),
+  UNIQUE (character_name)
+);
+
+
+CREATE TABLE active_monster (
+  active_monster_id INTEGER NOT NULL,
+  monster_id INTEGER NOT NULL,
+  PRIMARY KEY (active_monster_id),
+  Foreign KEY (monster_id) REFERENCES monster(monster_id)
+);
+
+CREATE TABLE character_inventory (
+  character_id INTEGER,
+  active_monster_id INTEGER,
+  PRIMARY KEY (character_id, active_monster_id),
+  Foreign KEY (character_id) REFERENCES character(character_id),
+  Foreign KEY (active_monster_id) REFERENCES active_monster(active_monster_id)
+);
+
+CREATE TABLE monster_inventory (
+  active_monster_id INTEGER,
+  item_id INTEGER,
+  PRIMARY KEY (active_monster_id, item_id),
+  Foreign KEY (active_monster_id) REFERENCES active_monster(active_monster_id),
+  Foreign KEY (item_id) REFERENCES item(item_id)
+);
+
+CREATE TABLE battle_log (
+  battle_id INTEGER,
+  character_id INTEGER,
+  monster_id INTEGER,
+  item_id INTEGER,
+  enemy_dead INTEGER,
+  PRIMARY KEY (battle_id),
+  FOREIGN KEY (character_id) REFERENCES character(character_id),
+  FOREIGN KEY (monster_id) REFERENCES monster(monster_id),
+  FOREIGN KEY (item_id) REFERENCES item(item_id)
+);
+
+INSERT INTO character (character_name)
+ VALUES ('Premade Character');
+
+INSERT INTO active_monster (monster_id)
+	VALUES (5), (6), (7);
+
+INSERT INTO character_inventory (character_id, active_monster_id)
+  VALUES (1, 1), (1, 2), (1, 3);
+
+INSERT INTO monster_inventory (active_monster_id, item_id)
+  VALUES (1,1), (2, 3);
+
+INSERT INTO battle_log (character_id, monster_id, item_id, enemy_dead)
+  VALUES (1, 1, NULL, 0), (1, 1, NULL, 0), (1, 1, NULL, 1), (1, 2, 2, 1), (1, 2, NULL, 0), (1, 2, NULL, 0)
