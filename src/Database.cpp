@@ -8,7 +8,7 @@
 
 database::database() {
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("testing.db");
+    db.setDatabaseName("animonDatabase.db");
 
     if (!db.open()) {
         qDebug() << "Failed to open database";

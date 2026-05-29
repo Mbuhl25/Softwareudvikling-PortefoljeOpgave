@@ -264,9 +264,17 @@ int main() {
             player = createCharacter();
         }
         // main loop of the game
-        std::cout << "What do you want to do?\n [1] Create a new character\n [2] Fight a monster\n [3] Check your inventory\n [4] exit the game" << std::endl;
-        int numberChoice = getNumberInput(1, 4);
+        std::cout << "What do you want to do?\n [0] Load a previous character\n [1] Create a new character\n [2] Fight a monster\n [3] Check your inventory\n [4] exit the game" << std::endl;
+        int numberChoice = getNumberInput(0, 4);
         switch (numberChoice) {
+            case 0:
+                std::cout << "current name: " << player.getName() << std::endl;
+                std::cout << "Switching to load character\n" << std::endl;
+                db.displayCharacters();
+                std::cout << db.getSavedCharactersAmount();
+                numberChoice = getNumberInput(0,db.getSavedCharactersAmount());
+                player = db.loadCharacter(numberChoice);
+                break;
             case 1:
                 std::cout << "Switching to create character\n" << std::endl;
                 player = createCharacter();
