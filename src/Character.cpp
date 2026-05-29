@@ -17,10 +17,6 @@ const std::vector<Monster>& Character::getInventory() const{
     return inventory;
 }
 
-const int Character::getInventorySize() const{
-    return inventorySize;
-}
-
 Monster& Character::getChosenMonster() {
     if (activeMonster < 0 || activeMonster >= inventory.size()) {
         throw std::logic_error("No active monster selected");
@@ -30,7 +26,7 @@ Monster& Character::getChosenMonster() {
 
 
 bool Character::setChosenMonster(int idx) {
-    if (0 < idx && idx <= inventory.size()) {
+    if (1 <= idx && idx <= inventory.size()) {
         activeMonster = idx-1;
         return true;
     }
@@ -50,7 +46,10 @@ bool Character::addMonster(const Monster& _monster) {
 }
 
 void Character::removeMonster(int index) {
-    inventory.erase(inventory.begin() + index);
+    inventory.erase(inventory.begin() + index - 1);
+    if (index - 1 < activeMonster) {
+        activeMonster--;
+    }
 }
 
 void Character::setName(const std::string& _name) {
