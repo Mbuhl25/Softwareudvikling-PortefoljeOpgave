@@ -21,8 +21,7 @@ int database::displayCharacters() {
     while (query.next()) {
         int number = query.value(0).toInt();
         std::string name = query.value(1).toString().toStdString() ;
-        int power = query.value(2).toInt();
-        std::cout << "[" << number << "] " << name << " " << power << std::endl;
+        std::cout << "[" << number << "] " << name << std::endl;
         }
     // qDebug() << "Finished";
     return 1;
