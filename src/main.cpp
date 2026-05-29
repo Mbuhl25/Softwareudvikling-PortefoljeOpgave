@@ -17,20 +17,23 @@ AsciiPrinter screen = AsciiPrinter();
 
 int getNumberInput(int lowerBound, int upperBound) {
     int numberChoice;
-
     while (true) {
-        std::cin >> numberChoice;
-        if (!std::cin) {
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            std::cout << "invalid input, pls enter a number" << std::endl;
+        std::string line;
+        std::getline(std::cin, line);
+        std::stringstream ss(line);
+        if (!(ss >> numberChoice)) {
+            std::cout << "invalid input, pls enter a number\n";
+            continue;
+        }
+        char extra;
+        if (ss >> extra) {
+            std::cout << "invalid input, no extra characters allowed\n";
             continue;
         }
         if (numberChoice >= lowerBound && numberChoice <= upperBound) {
             return numberChoice;
         }
-        std::cout << "invalid input, pls enter a number between " << lowerBound << " and " << upperBound << std::endl;
-        continue;
+        std::cout << "invalid range\n";
     }
 }
 
@@ -220,7 +223,7 @@ bool fightEnemy(Character& player) {
     std::cout << "\nAt the end of the cave you found the Item: " << itemReward.getName() << "." << std::endl;
     std::cout << "You can now give it to one of you Monsters: " << std::endl;
     screen.printInventory(player.getInventory());
-    numberChoice = getNumberInput(1, player.getInventory().size() + 1);
+    numberChoice = getNumberInput(1, player.getInventory().size());
     player.setChosenMonster(numberChoice);
     player.getChosenMonster().addItem(itemReward);
     // revive fainted monsters
