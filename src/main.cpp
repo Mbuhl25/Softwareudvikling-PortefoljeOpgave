@@ -230,6 +230,9 @@ bool fightEnemy(Character& player) {
             player.getChosenMonster().revive();
         }
     }
+    for (int i = 0; i < player.getInventory().size(); ++i) {
+        player.getInventory()[i].revive();
+    }
     return true;
 }
 

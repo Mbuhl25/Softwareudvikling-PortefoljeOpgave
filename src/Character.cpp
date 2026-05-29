@@ -17,6 +17,10 @@ const std::vector<Monster>& Character::getInventory() const{
     return inventory;
 }
 
+std::vector<Monster>& Character::getInventory() {
+    return inventory;
+}
+
 Monster& Character::getChosenMonster() {
     if (activeMonster < 0 || activeMonster >= inventory.size()) {
         throw std::logic_error("No active monster selected");

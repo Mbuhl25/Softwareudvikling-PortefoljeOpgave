@@ -15,6 +15,7 @@ class Character {
         // Getters
         const std::string& getName() const;
         const std::vector<Monster>& getInventory() const;
+        std::vector<Monster>& getInventory();
         Monster& getChosenMonster();
 
         // Modifiers
