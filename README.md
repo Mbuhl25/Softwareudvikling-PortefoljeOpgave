@@ -107,3 +107,21 @@ Noter:
 * Stunned – Guaranteed to miss next turn.
 * Cursed – Takes damage when dealing damage.
 
+
+# Tredje Iteration
+
+I tredje iteration skal der oprettes en database til at gemme data. Det er både data for den nuværende spiller og information om hvad der er sket i spillet. (Hvor mange gange en “ting” er blevet brugt, hvor mange monstre er blevet besejret.)
+
+Ud over muligheden for at gemme og læse (save and load) helte skal der ikke tilføjes mere til selve spillet.
+
+   * Databasen skal interfaces gennem en klasse.
+   * Databasen skal køre gennem sqlite3
+   * Ved start af spillet skal man kunne se alle helte og vælge en at spille videre med
+   * Man skal kunne gemme en helt og information der vedrørende helten
+   * Derudover skal man kunne samle statestik om spillet:
+      -  Antal besejrede monstre i alt
+      -  Hvor mange monstre er besejret af hver “ting”
+      -  Hvilken “ting” er blevet brugt mest af hver spiller
+      -  Hvilket monster er brugt mest af hver spiller
+
+I skal i jeres rapport forklare hvordan jeres databaser overholder de 4 første af the 5 normalformer (forklaret i lektion 10). 
