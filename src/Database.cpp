@@ -83,7 +83,40 @@ Character database::loadCharacter(int input) {
         Monster tempMonster = Monster(name, maxHP, damage, ascii);
         tempCharacter.addMonster(tempMonster);
     }
+
+    QSqlQuery addItem;
+    addItem.prepare("SELECT "
+    "    monster.monster_name, "
+    "    item.item_name "
+    "FROM character "
+    "JOIN character_inventory "
+    "    ON character.character_id = character_inventory.character_id "
+    "JOIN active_monster "
+    "    ON character_inventory.active_monster_id = active_monster.active_monster_id "
+    "JOIN monster "
+    "    ON monster.monster_id = active_monster.monster_id "
+    "JOIN monster_inventory "
+    "    ON active_monster.active_monster_id = monster_inventory.active_monster_id "
+    "JOIN item "
+    "    ON monster_inventory.item_id = item.item_id "
+    "WHERE character.character_id = ? "
+    );
+
+    addItem.addBindValue(input);
+    addItem.exec();
+
+    while (addItem.next()) {
+        std::string monsterName = addItem.value(0).toString().toStdString();
+        std::string itemName = addItem.value(1).toString().toStdString();
+        for (int i = 0; i < tempCharacter.getInventory().size(); ++i) {
+            std::cout << tempCharacter.getInventory()[i].getName() << std::endl;
+            if (tempCharacter.getInventory()[i].getName() == monsterName) {
+                tempCharacter.getInventory()[i].addItem(itemName);
+            }
+        }
+    }
     return tempCharacter;
 }
+
 
 database::~database() {}
