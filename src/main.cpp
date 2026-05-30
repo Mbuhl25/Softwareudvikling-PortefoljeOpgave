@@ -291,6 +291,8 @@ int main() {
                 screen.printInventory(player.getInventory());
                 break;
             case 4:
+                std::cout << "Savning character\n" << std::endl;
+                db.insertCharacter(player);
                 std::cout << "Exiting the game\n" << std::endl;
                 exit(0);
         }
