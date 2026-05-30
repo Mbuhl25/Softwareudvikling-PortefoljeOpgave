@@ -83,17 +83,16 @@ int randomTurnHandler() {
     return fiftyFiftyChance(randomGenerator);
 }
 
-    Character createCharacter() {
-        std::cout << "Input the name of your new character: ";
-        std::string name;
-        std::cin.ignore();
-        std::getline(std::cin, name);
-        Character newplayer = Character(name);
-        std::cout << "Choose two Starter Monsters for " << newplayer.getName() << std::endl;
-        chooseMonster(newplayer, caveGenerator.getMonsterList(1), 3);
-        chooseMonster(newplayer, caveGenerator.getMonsterList(1), 3);
-        return newplayer;
-    }
+Character createCharacter() {
+    std::cout << "Input the name of your new character: ";
+    std::string name;
+    std::getline(std::cin, name);
+    Character newplayer = Character(name);
+    std::cout << "Choose two Starter Monsters for " << newplayer.getName() << std::endl;
+    chooseMonster(newplayer, caveGenerator.getMonsterList(1), 3);
+    chooseMonster(newplayer, caveGenerator.getMonsterList(1), 3);
+    return newplayer;
+}
 
 bool fightEnemy(Character& player) {
     Character enemy = caveGenerator.createEnemy(caveGenerator.EstimatePlayerLevel(player));
@@ -106,9 +105,7 @@ bool fightEnemy(Character& player) {
 
     // a loop to make sure, a correct input is given
     int numberChoice;
-    do {
-        numberChoice = getNumberInput(1, player.getInventory().size());
-    } while (!player.setChosenMonster(numberChoice));
+    player.setChosenMonster(getNumberInput(1, player.getInventory().size()));
 
     std::vector<Character*> fighters = {&player, &enemy};
 
@@ -157,7 +154,6 @@ bool fightEnemy(Character& player) {
             }
             std::cout << "Which of your Monsters should be swapped into the fight " << std::endl;
             screen.printInventory(player.getInventory());
-            // a loop to make sure, a correct input is given
             player.setChosenMonster(getNumberInput(1, player.getInventory().size()));
         }
         
@@ -228,8 +224,9 @@ bool fightEnemy(Character& player) {
     numberChoice = getNumberInput(1, player.getInventory().size());
     player.setChosenMonster(numberChoice);
     player.getChosenMonster().addItem(itemReward);
+
     // revive fainted monsters
-    for (int i = 0; i < player.getInventory().size()+1; ++i) {
+    for (int i = 1; i < player.getInventory().size()+1; ++i) {
         player.setChosenMonster(i);
         if (player.getChosenMonster().getStatus() == "Fainted") {
             player.getChosenMonster().revive();
