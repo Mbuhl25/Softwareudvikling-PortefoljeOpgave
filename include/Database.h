@@ -13,6 +13,7 @@ public:
     int displayCharacters();
     int getSavedCharactersAmount();
     Character loadCharacter(int);
+    bool insertCharacter(Character);
     ~database();
 private:
     

@@ -252,6 +252,7 @@ int main() {
         break;
     case 2:
         std::cout << "\nChoose one of the characters from the database:" << std::endl;
+        std::cout << "[0] Create a new Character" << std::endl;
         db.displayCharacters();
         numberChoice = getNumberInput(0,db.getSavedCharactersAmount());
         player = db.loadCharacter(numberChoice);
@@ -290,6 +291,8 @@ int main() {
                 screen.printInventory(player.getInventory());
                 break;
             case 4:
+                std::cout << "Savning character\n" << std::endl;
+                db.insertCharacter(player);
                 std::cout << "Exiting the game\n" << std::endl;
                 exit(0);
         }
