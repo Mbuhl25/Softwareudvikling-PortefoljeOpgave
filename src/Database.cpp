@@ -15,7 +15,7 @@ database::database() {
     }
 }
 
-int database::displayCharacters() {
+int database::printCharacters() {
     QSqlQuery query;
     query.exec("SELECT * FROM character");
     while (query.next()) {
@@ -24,7 +24,7 @@ int database::displayCharacters() {
         std::cout << "[" << number << "] " << name << std::endl;
         }
     // qDebug() << "Finished";
-    return 1;
+    return getSavedCharactersAmount();
 }
 
 int database::getSavedCharactersAmount() {
@@ -117,73 +117,150 @@ Character database::loadCharacter(int input) {
     return tempCharacter;
 }
 
-bool database::insertCharacter(Character saveCharacter) {
+int database::getCharacterID(Character tempCharacter) {
+    QSqlQuery getCharacter;
+    getCharacter.prepare("SELECT character_id "
+        "FROM character "
+        "WHERE character_name = ?");
+    getCharacter.addBindValue(QString::fromStdString(tempCharacter.getName()));
+    if (!getCharacter.exec()) {
+        std::cout << "FUCK 1" << std::endl;
+        exit(1);
+    }
+    int characterID = 0;
+    if (getCharacter.next()) {
+        characterID = getCharacter.value(0).toInt();
+    } else {std::cout << "FUCK 2" << std::endl; exit(1); }
+    return characterID;
+}
+
+int database::getActiveMonsterID(int characterID, Monster tempMonster) {
+    QSqlQuery getActiveMonsterID;
+    getActiveMonsterID.prepare("SELECT "
+                                "active_monster.active_monster_id, "
+                                "monster.monster_name "
+                            "FROM active_monster "
+                            "JOIN monster "
+                                "ON monster.monster_id = active_monster.monster_id "
+                            "JOIN character_inventory "
+                                "ON character_inventory.active_monster_id = active_monster.active_monster_id "
+                            "WHERE character_inventory.character_id = ? "
+                            "AND monster.monster_name = ? " 
+                        "LIMIT 1");
+
+    
+    getActiveMonsterID.addBindValue(characterID);
+    getActiveMonsterID.addBindValue(QString::fromStdString(tempMonster.getName()));
+    
+    if (!getActiveMonsterID.exec()) {
+        std::cout << "FUCK 3" << std::endl;
+        exit(1);
+    }
+    int activeMonsterID = 0;
+    if (getActiveMonsterID.next()) {
+        activeMonsterID = getActiveMonsterID.value(0).toInt();
+    } else {std::cout << "FUCK 4" << std::endl; exit(1);}
+    return activeMonsterID;
+}
+
+bool insertItem(int activeMonsterID, Item tempItem) {
+    QSqlQuery getItem;
+    getItem.prepare("SELECT item_id FROM item WHERE item_name = ?");
+    getItem.addBindValue(QString::fromStdString(tempItem.getName()));
+
+    if (!getItem.exec()) {return false;}
+    int itemID = 0;
+    if (getItem.next()) {
+        itemID = getItem.value(0).toInt();
+    } else {return false;}
+    QSqlQuery insertItem;
+    insertItem.prepare(
+        "INSERT INTO monster_inventory (active_monster_id, item_id) "
+        "VALUES (?, ?)"
+    );
+    insertItem.addBindValue(activeMonsterID);
+    insertItem.addBindValue(itemID);
+    if (!insertItem.exec()) {return false;}
+    return true;
+}
+
+bool insertMonster(int characterID, Monster tempMonster) {
+    // get monster
+    QSqlQuery getMonster;
+    getMonster.prepare("SELECT monster_id "
+        "FROM monster "
+        "WHERE monster_name = ?");
+    getMonster.addBindValue(QString::fromStdString(tempMonster.getName()));
+    getMonster.exec();
+    int monsterID = 0;
+    if (getMonster.next()) {
+        monsterID = getMonster.value(0).toInt();
+    } else {return false; }
+
+    // Insert active_monster
+    QSqlQuery insertActiveMonster;
+    insertActiveMonster.prepare("INSERT INTO active_monster (monster_id) "
+                "VALUES (?)");
+    insertActiveMonster.addBindValue(monsterID);
+    if (!insertActiveMonster.exec()) {
+        return false;
+    }
+    int activeMonsterID = insertActiveMonster.lastInsertId().toInt();
+
+    // inset into inventory
+    QSqlQuery insertInventory;
+    insertInventory.prepare("INSERT INTO character_inventory (character_id, active_monster_id) "
+                "VALUES (?, ?)");
+    insertInventory.addBindValue(characterID);
+    insertInventory.addBindValue(activeMonsterID);
+    if (!insertInventory.exec()) {
+        return false;
+    }
+
+    // Insert Items
+    for (int i = 0; i < tempMonster.getItemList().size(); ++i) {
+        if(!insertItem(activeMonsterID, tempMonster.getItemList()[i])) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool database::insertNewCharacter(Character tempCharacter) {
     QSqlQuery insertCharacter;
 
     // Insert character
     insertCharacter.prepare("INSERT INTO character (character_name) "
                 "VALUES (?)");
-    insertCharacter.addBindValue(QString::fromStdString(saveCharacter.getName()));
+    insertCharacter.addBindValue(QString::fromStdString(tempCharacter.getName()));
     if (!insertCharacter.exec()) {
         return false;
     }
     int characterID = insertCharacter.lastInsertId().toInt();
 
     // Insert monsters
-    for (int i = 0; i < saveCharacter.getInventory().size(); ++i) {
-        QSqlQuery getMonster;
-        getMonster.prepare("SELECT monster_id "
-            "FROM monster "
-            "WHERE monster_name = ?");
-        getMonster.addBindValue(QString::fromStdString(saveCharacter.getInventory()[i].getName()));
-        getMonster.exec();
-        int monsterID = 0;
-        if (getMonster.next()) {
-            monsterID = getMonster.value(0).toInt();
-        } else {return false; }
-
-        
-        // Insert active_monster
-        QSqlQuery insertActiveMonster;
-        insertActiveMonster.prepare("INSERT INTO active_monster (monster_id) "
-                    "VALUES (?)");
-        insertActiveMonster.addBindValue(monsterID);
-        if (!insertActiveMonster.exec()) {
+    for (int i = 0; i < tempCharacter.getInventory().size(); ++i) {
+        if (!insertMonster(characterID, tempCharacter.getInventory()[i])) {
             return false;
         }
-        int activeMonsterID = insertActiveMonster.lastInsertId().toInt();
+    }
+    return true;
+}
 
-        QSqlQuery insertInventory;
-        insertInventory.prepare("INSERT INTO character_inventory (character_id, active_monster_id) "
-                    "VALUES (?, ?)");
-        insertInventory.addBindValue(characterID);
-        insertInventory.addBindValue(activeMonsterID);
-        if (!insertInventory.exec()) {
-            return false;
-        }
+bool database::insertNewMonster(Character tempCharacter, Monster tempMonster) {
+    int characterID = getCharacterID(tempCharacter);
+    if (!insertMonster(characterID, tempMonster)) {
+        return false;
+    }
+    return true;
+}
 
-        // Insert Items
-        for (int j = 0; j < saveCharacter.getInventory()[i].getItemList().size(); ++j) {
-            QSqlQuery getItem;
-            getItem.prepare("SELECT item_id "
-                "FROM item "
-                "WHERE item_name = ?");
-            getItem.addBindValue(QString::fromStdString(saveCharacter.getInventory()[i].getItemList()[j].getName()));
-            getItem.exec();
-            int itemID = 0;
-            if (getItem.next()) {
-                itemID = getItem.value(0).toInt();
-            } else {return false; }
 
-            QSqlQuery insertItem;
-            insertItem.prepare("INSERT INTO monster_inventory (active_monster_id, item_id) "
-                        "VALUES (?, ?)");
-            insertItem.addBindValue(activeMonsterID);
-            insertItem.addBindValue(itemID);
-            if (!insertItem.exec()) {
-                return false;
-            }
-        }
+bool database::insertNewItem(Character tempCharacter, Monster tempMonster, Item tempItem) {
+    int characterID = getCharacterID(tempCharacter);
+    int activeMonsterID = getActiveMonsterID(characterID, tempMonster);
+    if (!insertItem(activeMonsterID, tempItem)) {
+        return false;
     }
     return true;
 }

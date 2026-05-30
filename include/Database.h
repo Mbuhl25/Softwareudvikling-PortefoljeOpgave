@@ -10,12 +10,15 @@ class database
 {
 public:
     database();
-    int displayCharacters();
+    int printCharacters();
     int getSavedCharactersAmount();
     Character loadCharacter(int);
-    bool insertCharacter(Character);
+    bool insertNewCharacter(Character);
+    bool insertNewMonster(Character, Monster);
+    bool insertNewItem(Character, Monster, Item);
     ~database();
 private:
-    
+    int getCharacterID(Character);
+    int getActiveMonsterID(int, Monster);
 };
 #endif

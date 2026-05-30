@@ -91,6 +91,7 @@ Character createCharacter() {
     std::cout << "Choose two Starter Monsters for " << newplayer.getName() << std::endl;
     chooseMonster(newplayer, caveGenerator.getMonsterList(1), 3);
     chooseMonster(newplayer, caveGenerator.getMonsterList(1), 3);
+    db.insertNewCharacter(newplayer);
     return newplayer;
 }
 
@@ -119,6 +120,7 @@ bool fightEnemy(Character& player) {
             switch (numberChoice){
                 case 1:
                     // enemy.getChosenMonster().revive();
+                    db.insertNewMonster(player, enemy.getChosenMonster());
                     if (player.addMonster(enemy.getChosenMonster())) {
                         enemy.removeMonster(1);
                         enemy.setChosenMonster(1);
@@ -223,6 +225,7 @@ bool fightEnemy(Character& player) {
     screen.printInventory(player.getInventory());
     numberChoice = getNumberInput(1, player.getInventory().size());
     player.setChosenMonster(numberChoice);
+    db.insertNewItem(player, player.getChosenMonster(), itemReward);
     player.getChosenMonster().addItem(itemReward);
 
     // revive fainted monsters
@@ -253,8 +256,7 @@ int main() {
     case 2:
         std::cout << "\nChoose one of the characters from the database:" << std::endl;
         std::cout << "[0] Make a new Character" << std::endl;
-        db.displayCharacters();
-        numberChoice = getNumberInput(0,db.getSavedCharactersAmount());
+        numberChoice = getNumberInput(0,db.printCharacters());
         player = db.loadCharacter(numberChoice);
         break;
     }
@@ -271,9 +273,7 @@ int main() {
             case 0:
                 std::cout << "current name: " << player.getName() << std::endl;
                 std::cout << "Switching to load character\n" << std::endl;
-                db.displayCharacters();
-                std::cout << db.getSavedCharactersAmount();
-                numberChoice = getNumberInput(0,db.getSavedCharactersAmount());
+                numberChoice = getNumberInput(0, db.printCharacters());
                 player = db.loadCharacter(numberChoice);
                 break;
             case 1:
@@ -291,8 +291,6 @@ int main() {
                 screen.printInventory(player.getInventory());
                 break;
             case 4:
-                std::cout << "Savning character\n" << std::endl;
-                db.insertCharacter(player);
                 std::cout << "Exiting the game\n" << std::endl;
                 exit(0);
         }
