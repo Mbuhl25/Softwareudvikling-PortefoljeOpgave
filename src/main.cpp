@@ -69,6 +69,7 @@ void chooseMonster(Character& character, const std::vector<Monster>& monsterList
                 std::cout << "You already have " << character.getInventory().size() << " monsters. Choose one to replace: " << std::endl;
                 screen.printInventory(character.getInventory());
                 numberChoice = getNumberInput(1, character.getInventory().size() + 1);
+                db.removeMonsterFromInventory(character, character.getInventory()[numberChoice-1]);
                 character.removeMonster(numberChoice);
                 return;
             }
@@ -129,6 +130,7 @@ bool fightEnemy(Character& player) {
                         std::cout << "You already have " << player.getInventory().size() << " monsters. Choose one to replace: " << std::endl;
                         screen.printInventory(player.getInventory());
                         numberChoice = getNumberInput(1, player.getInventory().size() + 1);
+                        db.removeMonsterFromInventory(player, player.getInventory()[numberChoice-1]);
                         player.removeMonster(numberChoice);
                         enemy.removeMonster(1);
                         enemy.setChosenMonster(1);

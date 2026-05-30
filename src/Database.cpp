@@ -265,4 +265,30 @@ bool database::insertNewItem(Character tempCharacter, Monster tempMonster, Item 
     return true;
 }
 
+bool database::removeMonsterFromInventory(Character tempCharacter, Monster tempMonster) {
+    QSqlQuery removeMonster;
+
+    removeMonster.prepare("DELETE FROM character_inventory "
+        "WHERE active_monster_id IN ( "
+            "SELECT active_monster.active_monster_id "
+            "FROM active_monster "
+            "JOIN monster "
+                "ON monster.monster_id = active_monster.monster_id "
+            "JOIN character_inventory "
+                "ON character_inventory.active_monster_id = active_monster.active_monster_id "
+            "JOIN character "
+                "ON character.character_id = character_inventory.character_id "
+            "WHERE character.character_name = ? "
+            "AND monster.monster_name = ? "
+            ");");
+
+    removeMonster.addBindValue(QString::fromStdString(tempCharacter.getName()));
+    removeMonster.addBindValue(QString::fromStdString(tempMonster.getName()));
+
+    if (!removeMonster.exec()) {
+        return false;
+    }
+    return true;
+}
+
 database::~database() {}
