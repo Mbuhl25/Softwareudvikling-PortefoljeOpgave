@@ -100,7 +100,7 @@ Character database::loadCharacter(int input) {
         ON active_monster.active_monster_id = monster_inventory.active_monster_id
     JOIN item
         ON monster_inventory.item_id = item.item_id
-    WHERE character.character_id = 1;
+    WHERE character.character_id = :id;
     )");
 
     query.bindValue(":id", input);
@@ -135,7 +135,7 @@ int database::getCharacterID(Character tempCharacter) {
     return characterID;
 }
 
-int database::getActiveMonsterID(Character tempCharacter, Monster tempMonster) {
+int database::getActiveMonsterID(int characterID, Monster tempMonster) {
     QSqlQuery getActiveMonsterID;
     getActiveMonsterID.prepare("SELECT "
                                 "active_monster.active_monster_id, "
@@ -148,8 +148,11 @@ int database::getActiveMonsterID(Character tempCharacter, Monster tempMonster) {
                             "WHERE character_inventory.character_id = ? "
                             "AND monster.monster_name = ? " 
                         "LIMIT 1");
-    getActiveMonsterID.addBindValue(getCharacterID(tempCharacter));
+
+    
+    getActiveMonsterID.addBindValue(characterID);
     getActiveMonsterID.addBindValue(QString::fromStdString(tempMonster.getName()));
+    
     if (!getActiveMonsterID.exec()) {
         std::cout << "FUCK 3" << std::endl;
         exit(1);
@@ -163,24 +166,22 @@ int database::getActiveMonsterID(Character tempCharacter, Monster tempMonster) {
 
 bool insertItem(int activeMonsterID, Item tempItem) {
     QSqlQuery getItem;
-    getItem.prepare("SELECT item_id "
-        "FROM item "
-        "WHERE item_name = ?");
+    getItem.prepare("SELECT item_id FROM item WHERE item_name = ?");
     getItem.addBindValue(QString::fromStdString(tempItem.getName()));
-    getItem.exec();
+
+    if (!getItem.exec()) {return false;}
     int itemID = 0;
     if (getItem.next()) {
         itemID = getItem.value(0).toInt();
-    } else {return false; }
-
+    } else {return false;}
     QSqlQuery insertItem;
-    insertItem.prepare("INSERT INTO monster_inventory (active_monster_id, item_id) "
-                "VALUES (?, ?)");
+    insertItem.prepare(
+        "INSERT INTO monster_inventory (active_monster_id, item_id) "
+        "VALUES (?, ?)"
+    );
     insertItem.addBindValue(activeMonsterID);
     insertItem.addBindValue(itemID);
-    if (!insertItem.exec()) {
-        return false;
-    }
+    if (!insertItem.exec()) {return false;}
     return true;
 }
 
@@ -258,8 +259,7 @@ bool database::insertNewMonster(Character tempCharacter, Monster tempMonster) {
 
 bool database::insertNewItem(Character tempCharacter, Monster tempMonster, Item tempItem) {
     int characterID = getCharacterID(tempCharacter);
-    int activeMonsterID = getActiveMonsterID(tempCharacter, tempMonster);
-
+    int activeMonsterID = getActiveMonsterID(characterID, tempMonster);
     if (!insertItem(activeMonsterID, tempItem)) {
         return false;
     }

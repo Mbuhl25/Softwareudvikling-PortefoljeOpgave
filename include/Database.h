@@ -19,6 +19,6 @@ public:
     ~database();
 private:
     int getCharacterID(Character);
-    int getActiveMonsterID(Character, Monster);
+    int getActiveMonsterID(int, Monster);
 };
 #endif
