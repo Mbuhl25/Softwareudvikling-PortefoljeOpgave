@@ -6,7 +6,7 @@ CREATE TABLE item (
 );
 
 INSERT INTO item (item_name)
- VALUES ('Bomb'), ('FireBomb'), ('ThunderBomb'), ('Club'), ('IceCubes'), ('Curse'), ('Poison');
+ VALUES ('Bomb'), ('FireBomb'), ('ThunderBomb'), ('Club'), ('IceCubes'), ('Curse'), ('Poison'), ('Empty');
 
 
 CREATE TABLE monster (

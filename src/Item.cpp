@@ -22,6 +22,8 @@ Item::Item(std::string _name) {
         itemEnum = ItemType::Curse;
     } else if (name == "Poison") {
         itemEnum = ItemType::Poison;
+    } else if (name == "Empty") {
+        itemEnum = ItemType::Empty;
     } else {
         std::cout << "Item has an illegal name" << std::endl;
         exit(1);
