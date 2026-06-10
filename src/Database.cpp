@@ -291,4 +291,58 @@ bool database::removeMonsterFromInventory(Character tempCharacter, Monster tempM
     return true;
 }
 
+int database::getItemID(Item tempItem) {
+    QSqlQuery getItem;
+    getItem.prepare("SELECT item_id "
+        "FROM item "
+        "WHERE item_name = ?");
+    getItem.addBindValue(QString::fromStdString(tempItem.getName()));
+
+    if (!getItem.exec()) {
+        exit(1);
+    }
+    int itemID = 0;
+    if (getItem.next()) {
+        itemID = getItem.value(0).toInt();
+    } else { exit(1); }
+    return itemID;
+}
+
+int database::getMonsterID(int activeMonsterID) {
+    QSqlQuery getMonsterID;
+    getMonsterID.prepare(
+        "SELECT monster_id "
+        "FROM active_monster "
+        "WHERE active_monster_id = ?"
+    );
+    getMonsterID.addBindValue(activeMonsterID);
+    if (!getMonsterID.exec()) {
+        return false;;
+    }
+    if (getMonsterID.next()) {
+        return getMonsterID.value(0).toInt();
+    }
+    return false;
+}
+
+bool database::insertFightStats(Character tempCharacter, Monster tempMonster, Item tempItem, int isDead ) {
+    int characterID = getCharacterID(tempCharacter);
+    int activeMonsterID = getActiveMonsterID(characterID, tempMonster);
+    int monsterID = getMonsterID(activeMonsterID);
+    int itemID = getItemID(tempItem);
+    
+    // inset into battle_log
+    QSqlQuery insertInventory;
+    insertInventory.prepare("INSERT INTO battle_log (character_id, monster_id, item_id, enemy_dead) "
+                "VALUES (?, ?, ?, ?)");
+    insertInventory.addBindValue(characterID);
+    insertInventory.addBindValue(monsterID);
+    insertInventory.addBindValue(itemID);
+    insertInventory.addBindValue(isDead);
+    if (!insertInventory.exec()) {
+        return false;
+    }
+    return true;
+}
+
 database::~database() {}

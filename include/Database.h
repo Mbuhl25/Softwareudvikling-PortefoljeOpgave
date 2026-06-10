@@ -17,9 +17,12 @@ public:
     bool insertNewMonster(Character, Monster);
     bool insertNewItem(Character, Monster, Item);
     bool removeMonsterFromInventory(Character, Monster);
+    bool insertFightStats(Character, Monster, Item, int);
     ~database();
 private:
     int getCharacterID(Character);
     int getActiveMonsterID(int, Monster);
+    int getItemID(Item);
+    int getMonsterID(int);
 };
 #endif
