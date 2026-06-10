@@ -9,40 +9,40 @@ CaveFactory::CaveFactory() {
 
     // Initialize a vector with objects for every monster
     allMonsters = {
-    Monster("Wiggly Worm",        5,    5, "../AsciiArt/Worm.txt"),
-    Monster("Dizzy Duckling",     10,   5, "../AsciiArt/Duckling.txt"),
-    Monster("Creepy Cockroach",   10,  10, "../AsciiArt/Cockroach.txt"),
-    Monster("Mighty Mouse",       10,  15, "../AsciiArt/Mouse.txt"),
-    Monster("Buzzing Bee",        10,  20, "../AsciiArt/Bee.txt"),
-    Monster("Flipping Fish",      25,  10, "../AsciiArt/Fish.txt"),
-    Monster("Fierce Frog",        25,  15, "../AsciiArt/Frog.txt"),
-    Monster("Bad Bat",            20,  25, "../AsciiArt/Bat.txt"),
-    Monster("Raging Rabbit",      35,  15, "../AsciiArt/Rabbit.txt"),
-    Monster("Savage Spider",      5,   50, "../AsciiArt/Spider.txt"),
-    Monster("Sneaky Squirrel",    30,  30, "../AsciiArt/Squirrel.txt"),
-    Monster("Punchy Penguin",     40,  25, "../AsciiArt/Penguin.txt"),
-    Monster("Observant Owl",      40,  30, "../AsciiArt/Owl.txt"),
-    Monster("Clever Cat",         45,  40, "../AsciiArt/Cat.txt"),
-    Monster("Prickly Porcupine",  65,  30, "../AsciiArt/Porcupine.txt"),
-    Monster("Dashing Deer",       75,  30, "../AsciiArt/Deer.txt"),
-    Monster("Confused Cow",       100, 20, "../AsciiArt/Cow.txt"),
-    Monster("Hardy Horse",        90,  40, "../AsciiArt/Horse.txt"),
-    Monster("Enormous Elephant",  100, 50, "../AsciiArt/Elephant.txt"),
-    //Monster("Devious Dragon",     100, 100, "../AsciiArt/Dragon.txt"),
+    Monster("Wiggly Worm",        5,    1, "../AsciiArt/Worm.txt"),
+    Monster("Dizzy Duckling",     10,   1, "../AsciiArt/Duckling.txt"),
+    Monster("Creepy Cockroach",   10,   2, "../AsciiArt/Cockroach.txt"),
+    Monster("Mighty Mouse",       10,   3, "../AsciiArt/Mouse.txt"),
+    Monster("Buzzing Bee",        10,   4, "../AsciiArt/Bee.txt"),
+    Monster("Flipping Fish",      25,   2, "../AsciiArt/Fish.txt"),
+    Monster("Fierce Frog",        25,   3, "../AsciiArt/Frog.txt"),
+    Monster("Bad Bat",            20,   5, "../AsciiArt/Bat.txt"),
+    Monster("Raging Rabbit",      35,   3, "../AsciiArt/Rabbit.txt"),
+    Monster("Savage Spider",      5,   10, "../AsciiArt/Spider.txt"),
+    Monster("Sneaky Squirrel",    30,   6, "../AsciiArt/Squirrel.txt"),
+    Monster("Punchy Penguin",     40,   5, "../AsciiArt/Penguin.txt"),
+    Monster("Observant Owl",      40,   6, "../AsciiArt/Owl.txt"),
+    Monster("Clever Cat",         45,   8, "../AsciiArt/Cat.txt"),
+    Monster("Prickly Porcupine",  65,   6, "../AsciiArt/Porcupine.txt"),
+    Monster("Dashing Deer",       75,   6, "../AsciiArt/Deer.txt"),
+    Monster("Confused Cow",       100,  4, "../AsciiArt/Cow.txt"),
+    Monster("Hardy Horse",        90,   8, "../AsciiArt/Horse.txt"),
+    Monster("Enormous Elephant",  100, 10, "../AsciiArt/Elephant.txt"),
+    //Monster("Devious Dragon",     100,  20, "../AsciiArt/Dragon.txt"),
     };
 
     tier1Monsters = {
-    Monster("Wiggly Worm",        5,    5, "../AsciiArt/Worm.txt"),
-    Monster("Dizzy Duckling",     10,   5, "../AsciiArt/Duckling.txt"),
-    Monster("Creepy Cockroach",   10,  10, "../AsciiArt/Cockroach.txt"),
-    Monster("Mighty Mouse",       10,  15, "../AsciiArt/Mouse.txt"),
-    Monster("Buzzing Bee",        10,  20, "../AsciiArt/Bee.txt"),
-    Monster("Flipping Fish",      25,  10, "../AsciiArt/Fish.txt"),
-    Monster("Fierce Frog",        25,  15, "../AsciiArt/Frog.txt"),
+    Monster("Wiggly Worm",        5,    1, "../AsciiArt/Worm.txt"),
+    Monster("Dizzy Duckling",     10,   1, "../AsciiArt/Duckling.txt"),
+    Monster("Creepy Cockroach",   10,   2, "../AsciiArt/Cockroach.txt"),
+    Monster("Mighty Mouse",       10,   3, "../AsciiArt/Mouse.txt"),
+    Monster("Buzzing Bee",        10,   4, "../AsciiArt/Bee.txt"),
+    Monster("Flipping Fish",      25,   2, "../AsciiArt/Fish.txt"),
+    Monster("Fierce Frog",        25,   3, "../AsciiArt/Frog.txt"),
     };
     // Giving mystelf the dragon for debugging and quick testing
     tier2Monsters = {
-    Monster("Devious Dragon",     100, 100, "../AsciiArt/Dragon.txt"),
+    Monster("Devious Dragon",     100,  20, "../AsciiArt/Dragon.txt"),
     };
 
     allItems = {
