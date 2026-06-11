@@ -194,16 +194,19 @@ bool fightEnemy(Character& player) {
             // Apply status effects
             if (enemy.getChosenMonster().getStatus() == "Stunned") {
                 enemy.getChosenMonster().setStatus("");
+                randomTurn = !randomTurn;
                 continue;
             }
             if (enemy.getChosenMonster().getStatus() == "Paralyzed") {
                 if (percentage <= 30) {
+                    randomTurn = !randomTurn;
                     continue;
                 }
             }
             if (enemy.getChosenMonster().getStatus() == "Frozen") {
-                if (enemy.getChosenMonster().getFrozenTimes() < 0) {
+                if (enemy.getChosenMonster().getFrozenTimes() > 0) {
                     enemy.getChosenMonster().setFrozenTimes(enemy.getChosenMonster().getFrozenTimes() - 1);
+                    randomTurn = !randomTurn;
                     continue;
                 } else {
                     enemy.getChosenMonster().setStatus("");

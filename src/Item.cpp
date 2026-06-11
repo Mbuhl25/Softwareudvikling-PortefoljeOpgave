@@ -68,6 +68,7 @@ void Item::useItem(Monster& enemyMonster) {
 
     case ItemType::IceCubes:
         std::cout << "using IceCubes" << std::endl;
+        enemyMonster.takeDamage(3);
         if (percentage <= 80) {
             enemyMonster.setStatus("Frozen");
             if (percentage <= 40) {
@@ -80,7 +81,7 @@ void Item::useItem(Monster& enemyMonster) {
 
     case ItemType::Curse:
         std::cout << "using Curse" << std::endl;
-        if (enemyMonster.getStatus() != "") {
+        if (enemyMonster.getHitPoints() != enemyMonster.getMaxHitPoints()) {
             if (percentage <= 80) {
                 enemyMonster.setStatus("Curse");
             }
@@ -89,9 +90,12 @@ void Item::useItem(Monster& enemyMonster) {
                 enemyMonster.setStatus("Curse");
             }
         }
+        enemyMonster.takeDamage(2);
+        break;
 
     case ItemType::Poison:
         std::cout << "using Poison" << std::endl;
+        enemyMonster.takeDamage(2);
         if (enemyMonster.getMaxHitPoints() != enemyMonster.getHitPoints()) {
             enemyMonster.setStatus("Poisoned");
         } else {
