@@ -167,6 +167,7 @@ bool fightEnemy(Character& player) {
             switch (numberChoice){
                 case 1:
                     fighters[!randomTurn]->getChosenMonster().takeDamage(fighters[randomTurn]->getChosenMonster().getDamage());
+                    db.insertFightStats(player, player.getChosenMonster(), Item("Empty"), enemy.getChosenMonster().getHitPoints() <= 0);
                     break;
                 case 2:
                     std::cout << "Which of your Monsters should be swapped into the fight " << std::endl;
@@ -178,6 +179,7 @@ bool fightEnemy(Character& player) {
                     if (player.getChosenMonster().getItemList().empty()) {
                         std::cout << "You don't have any items, so your monster attacks instead" << std::endl;
                         fighters[!randomTurn]->getChosenMonster().takeDamage(fighters[randomTurn]->getChosenMonster().getDamage());
+                        db.insertFightStats(player, player.getChosenMonster(), Item("Empty"), enemy.getChosenMonster().getHitPoints() <= 0);
                         break;
                     }
                     std::cout << "Choose an item to use:" << std::endl;
@@ -186,6 +188,7 @@ bool fightEnemy(Character& player) {
                     }
                     numberChoice = getNumberInput(1, player.getChosenMonster().getItemList().size());
                     player.getChosenMonster().getItemList()[numberChoice-1].useItem(enemy.getChosenMonster());
+                    db.insertFightStats(player, player.getChosenMonster(), player.getChosenMonster().getItemList()[numberChoice-1], enemy.getChosenMonster().getHitPoints() <= 0);
             }
         } else if (randomTurn == 1) {
             int percentage;

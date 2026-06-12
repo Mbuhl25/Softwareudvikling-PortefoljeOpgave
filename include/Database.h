@@ -18,6 +18,10 @@ public:
     bool insertNewItem(Character, Monster, Item);
     bool removeMonsterFromInventory(Character, Monster);
     bool insertFightStats(Character, Monster, Item, int);
+    int amountOfKills(Character);
+    std::pair<std::vector<std::string>, std::vector<int>> favouriteMonsters(Character);
+    std::pair<std::vector<std::string>, std::vector<int>> favouriteItems(Character);
+    std::pair<std::vector<std::string>, std::vector<int>> favouriteUsedItem(Character);
     ~database();
 private:
     int getCharacterID(Character);

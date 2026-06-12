@@ -3,6 +3,8 @@
 #include <QSqlDatabase>
 #include <string>
 #include <iostream>
+#include <vector>
+#include <utility>
 
 #include "Database.h"
 
@@ -344,5 +346,105 @@ bool database::insertFightStats(Character tempCharacter, Monster tempMonster, It
     }
     return true;
 }
+
+int database::amountOfKills(Character tempCharacter) {
+    QSqlQuery retrieveStatistics;
+    retrieveStatistics.prepare(
+        "SELECT COUNT(*) "
+        "FROM battle_log "
+        "JOIN monster ON battle_log.monster_id = monster.monster_id "
+        "WHERE battle_log.character_id = ? "
+        "AND battle_log.enemy_dead = 1 "
+    );
+    retrieveStatistics.addBindValue(getCharacterID(tempCharacter));
+    if (!retrieveStatistics.exec()) {
+        return false;;
+    }
+    if (retrieveStatistics.next()) {
+        return retrieveStatistics.value(0).toInt();
+    }
+    return 0;
+}
+
+
+std::pair<std::vector<std::string>, std::vector<int>> database::favouriteMonsters(Character tempCharacter) {
+    QSqlQuery retrieveStatistics;
+    retrieveStatistics.prepare(
+        "SELECT monster.monster_name, COUNT(*) AS attack_count "
+        "FROM battle_log "
+        "JOIN monster ON battle_log.monster_id = monster.monster_id "
+        "WHERE battle_log.character_id = ? "
+        "GROUP BY monster.monster_id "
+        "ORDER BY attack_count DESC "
+    );
+    retrieveStatistics.addBindValue(getCharacterID(tempCharacter));
+    if (!retrieveStatistics.exec()) {
+        return { {}, {} };
+    }
+    std::vector<std::string> monsterNames;
+    std::vector<int>  monsterUsages;
+    while (retrieveStatistics.next()) {
+        monsterNames.push_back(retrieveStatistics.value(0).toString().toStdString());
+        monsterUsages.push_back(retrieveStatistics.value(1).toInt());
+    }
+    std::pair<std::vector<std::string>, std::vector<int>> favouriteMonsters= {monsterNames, monsterUsages};
+    return favouriteMonsters;
+}
+
+
+std::pair<std::vector<std::string>, std::vector<int>> database::favouriteItems(Character tempCharacter) {
+    QSqlQuery retrieveStatistics;
+    retrieveStatistics.prepare(
+        "SELECT i.item_name, COUNT(*) AS kill_count "
+        "FROM battle_log bl "
+        "JOIN item i ON bl.item_id = i.item_id "
+        "WHERE bl.enemy_dead = 1 "
+        "AND bl.character_id = ? "
+        "AND bl.item_id IS NOT NULL "
+        " AND i.item_name != 'Empty' "
+        "GROUP BY bl.item_id "
+        "ORDER BY kill_count DESC "
+    );
+    retrieveStatistics.addBindValue(getCharacterID(tempCharacter));
+    if (!retrieveStatistics.exec()) {
+        return { {}, {} };
+    }
+    std::vector<std::string> itemName;
+    std::vector<int>  itemKills;
+    while (retrieveStatistics.next()) {
+        itemName.push_back(retrieveStatistics.value(0).toString().toStdString());
+        itemKills.push_back(retrieveStatistics.value(1).toInt());
+    }
+    std::pair<std::vector<std::string>, std::vector<int>> favouriteMonsters= {itemName, itemKills};
+    return favouriteMonsters;
+}
+
+std::pair<std::vector<std::string>, std::vector<int>> database::favouriteUsedItem(Character tempCharacter) {
+    QSqlQuery retrieveStatistics;
+    retrieveStatistics.prepare(
+        "SELECT item.item_name, COUNT(*) AS kill_count "
+        "FROM battle_log "
+        "JOIN item ON battle_log.item_id = item.item_id "
+        "WHERE battle_log.character_id = ? "
+        "AND battle_log.item_id IS NOT NULL "
+        " AND item.item_name != 'Empty' "
+        "GROUP BY battle_log.item_id "
+        "ORDER BY kill_count DESC "
+        "LIMIT 1"
+    );
+    retrieveStatistics.addBindValue(getCharacterID(tempCharacter));
+    if (!retrieveStatistics.exec()) {
+        return { {}, {} };
+    }
+    std::vector<std::string> itemName;
+    std::vector<int>  itemKills;
+    while (retrieveStatistics.next()) {
+        itemName.push_back(retrieveStatistics.value(0).toString().toStdString());
+        itemKills.push_back(retrieveStatistics.value(1).toInt());
+    }
+    std::pair<std::vector<std::string>, std::vector<int>> favouriteMonsters= {itemName, itemKills};
+    return favouriteMonsters;
+}
+
 
 database::~database() {}
