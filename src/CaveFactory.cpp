@@ -98,8 +98,8 @@ Character CaveFactory::createEnemy(int characterLevel) {
     randomIndex = rand() % randomNames.size();
 
     Character enemy = Character(randomNames[randomIndex]);    
-    characterLevel *= 0.8;
-    int firstDesiredMonsterPowerLevel = characterLevel * 2/3;
+    characterLevel *= 0.9;
+    int firstDesiredMonsterPowerLevel = characterLevel * 3/4;
     int secondDesiredMonsterPowerLevel = (characterLevel - firstDesiredMonsterPowerLevel) * 2/3;
     int thirdDesiredMonsterPowerLevel = characterLevel - firstDesiredMonsterPowerLevel - secondDesiredMonsterPowerLevel;
 
