@@ -14,7 +14,7 @@ public:
     ~Item();
 private:
     std::string name;
-    enum class ItemType {Bomb, FireBomb, ThunderBomb, Club, IceCubes, Curse, Poison};
+    enum class ItemType {Bomb, FireBomb, ThunderBomb, Club, IceCubes, Curse, Poison, Empty};
     ItemType itemEnum;
 };
 
