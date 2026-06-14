@@ -5,6 +5,7 @@
 #include <random>
 #include <cstdlib>
 #include <ctime>
+#include <utility>
 #include "Character.h"
 #include "Monster.h"
 #include "AsciiPrinter.h"
@@ -275,8 +276,8 @@ int main() {
             player = createCharacter();
         }
         // main loop of the game
-        std::cout << "What do you want to do?\n [0] Load a previous character\n [1] Create a new character\n [2] Fight a monster\n [3] Check your inventory\n [4] exit the game" << std::endl;
-        int numberChoice = getNumberInput(0, 4);
+        std::cout << "What do you want to do?\n [0] Load a previous character\n [1] Create a new character\n [2] Fight a monster\n [3] Check your inventory\n [4] Check game stats\n [5] exit the game" << std::endl;
+        int numberChoice = getNumberInput(0, 5);
         switch (numberChoice) {
             case 0:
                 std::cout << "current name: " << player.getName() << std::endl;
@@ -298,7 +299,28 @@ int main() {
                 std::cout << "Checking inventory\n" << std::endl;
                 screen.printInventory(player.getInventory());
                 break;
-            case 4:
+            case 4: {
+                std::cout << "printing statistics:\n" << std::endl;
+                
+                std::cout << player.getName() << " has killed " << db.amountOfKills(player) << " monsters." << std::endl;
+
+                auto [monsterNames, usages] = db.favouriteMonsters(player);
+                for (int i = 0; i < monsterNames.size(); i++) {
+                    std::cout << "Your monster, " << std::left << std::setw(17) << monsterNames[i] << " has attacked " << usages[i] << " times." << std::endl;
+                }
+
+                auto [itemNames, kills] = db.favouriteItems(player);
+                for (int i = 0; i < itemNames.size(); i++) {
+                    std::cout << player.getName() << "'s item : " << itemNames[i] << " has gotten " << kills[i] << " kills." << std::endl;
+                }
+
+                auto [itemName, used] = db.favouriteUsedItem(player);
+                for (int i = 0; i < itemName.size(); i++) {
+                    std::cout << player.getName() << "'s most used item is, " << itemName[i] << " which is used " << used[i] << " times." << std::endl;
+                }
+            }
+                break;
+            case 5:
                 std::cout << "Exiting the game\n" << std::endl;
                 exit(0);
         }
